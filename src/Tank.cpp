@@ -9,3 +9,5 @@ void Tank::print() {
 		std::cout << std::endl;
 	}
 }
+
+void move();
