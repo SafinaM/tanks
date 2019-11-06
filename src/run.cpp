@@ -81,12 +81,11 @@ int main() {
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > 0.1) {
-				// erase prev figure!!!
 				start = std::chrono::system_clock::now();
 				diff.zero();
 				break;
 			}
-		}// one figure movement
+		} // one figure movement
 		
 	} // main cycle
 	

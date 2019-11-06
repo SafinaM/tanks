@@ -8,9 +8,9 @@
 
 struct Tank : Figure {
 	
-	enum TankSymbs : char {
+	enum TankSymbol : char {
 		Empty = 0,
-		Cabin = 'o',
+		Cabin = 'O',
 		Gun = 'o',
 	};
 	

@@ -20,22 +20,22 @@ void PainterTanks::drawFigure(const Tank &tank, bool draw, char symbol) const no
 			if (points[i][j] == 1) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
-					i + yOffset +  yOffsetBoard,
+					i + yOffset + yOffsetBoard,
 					Tank::TankSymbs::Empty,
 					color,
 					textColor);
 			} else if (points[i][j] == 2) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
-					i + yOffset +  yOffsetBoard,
-					Tank::TankSymbs::Empty,
+					i + yOffset + yOffsetBoard,
+					Tank::TankSymbs::Cabin,
 					color,
 					textColor);
 			} else if (points[i][j] == 3) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
-					i + yOffset +  yOffsetBoard,
-					Tank::TankSymbs::,
+					i + yOffset + yOffsetBoard,
+					Tank::TankSymbs::Gun,
 					color,
 					textColor);
 			}

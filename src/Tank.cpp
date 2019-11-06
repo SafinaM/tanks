@@ -31,7 +31,7 @@ void Tank::move(const Direction direction) {
 				points =
 					{{1, 3, 1},
 					 {1, 2, 1},
-					 {1, 0, 1}};
+					 {1, 1, 1}};
 				--m_offsetY;
 				break;
 			case Direction::Down:
