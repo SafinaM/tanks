@@ -1,63 +1,27 @@
 #pragma once
 #include <vector>
-
 #include <cstdint>
+#include <unordered_map>
+#include <string>
 
-struct Tank {
-	int m_XOffset = 0;
-	int m_yOffset = 0;
-	enum Direction: uint32_t {
-		Left  = 0,
-		Right = 1,
-		Up    = 2,
-		Down  = 3
+#include <Figure.h>
+
+struct Tank : Figure {
+	
+	enum TankSymbs : char {
+		Empty = 0,
+		Cabin = 'o',
+		Gun = 'o',
 	};
 	
-	std::vector<std::vector<uint8_t>> buffer =
-		{{0, 3, 0},
-		 {1, 1, 1},
+	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
+	std::vector<std::vector<uint8_t>> points =
+		{{1, 3, 1},
 		 {1, 2, 1},
 		 {1, 1, 1}};
 	
-	void move(const Direction direction) {
-		
-		switch (direction) {
-			case Left:
-				buffer =
-					{{1, 1, 1, 0},
-					 {1, 2, 1, 3},
-					 {1, 1, 1, 0}};
-				--m_XOffset;
-				break;
-			case Right:
-				buffer =
-					{{0, 1, 1, 1},
-					 {3, 1, 2, 1},
-					 {0, 1, 1, 1}};
-				++m_XOffset;
-			case Up:
-				buffer =
-					{{0, 3, 0},
-					 {1, 1, 1},
-					 {1, 2, 1},
-					 {1, 1, 1}};
-				--m_yOffset;
-				break;
-			case Down:
-				buffer =
-					{{1, 1, 1},
-					 {1, 2, 1},
-					 {1, 1, 1},
-					 {0, 3, 0}};
-				++m_yOffset;
-				break;
-		}
-	}
+	void move(const Direction direction);
 	
-	void print() {
-	
-	}
-	
+	void print();
 
 };
-
