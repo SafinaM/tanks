@@ -1,13 +1,14 @@
 #include "PainterTanks.h"
-#include <Tank.h>
+#include "Tank.h"
+#include <cassert>
 
-void PainterTanks::drawFigure(const Tank &tank, bool draw, char symbol) const noexcept {
+void PainterTanks::drawTank(const Tank& tank, bool draw, char symbol) const noexcept {
 	const auto& points = tank.getPoints();
 	assert(!points.empty());
 	const int xOffset = tank.getXOffset();
 	const int yOffset = tank.getYOffset();
 	uint32_t color = 0;
-	uint32_t textColor = Board::textColor;
+	uint32_t textColor = 3;
 	if (draw) {
 		color = tank.getColor();
 		textColor = tank.getColor();
@@ -21,21 +22,21 @@ void PainterTanks::drawFigure(const Tank &tank, bool draw, char symbol) const no
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
-					Tank::TankSymbs::Empty,
+					Tank::TankSymbol::Empty,
 					color,
 					textColor);
 			} else if (points[i][j] == 2) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
-					Tank::TankSymbs::Cabin,
+					Tank::TankSymbol::Cabin,
 					color,
 					textColor);
 			} else if (points[i][j] == 3) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
-					Tank::TankSymbs::Gun,
+					Tank::TankSymbol::Gun,
 					color,
 					textColor);
 			}

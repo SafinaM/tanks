@@ -1,6 +1,7 @@
 #include <thread>
 #include <Painter.h>
 #include "Tank.h"
+#include "PainterTanks.h"
 
 // TODO noecho for windows
 void noecho() {
@@ -21,7 +22,7 @@ int main() {
 	Tank tank;
 	tank.print();
 	auto start = std::chrono::system_clock::now();
-	Painter painter;
+	PainterTanks painter;
 	painter.hideCursor();
 	
 	painter.drawHead(" T A N K S ");
@@ -50,6 +51,8 @@ int main() {
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
 				getch();
 			}
+			tank.getPoints();
+			painter.drawTank(tank, true, ' ');
 			
 			if (kbhit()) {
 				ch = rlutil::getkey();
@@ -85,6 +88,7 @@ int main() {
 				diff.zero();
 				break;
 			}
+			
 		} // one figure movement
 		
 	} // main cycle

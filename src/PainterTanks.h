@@ -1,9 +1,10 @@
 #pragma once
 
 #include <Painter.h>
+#include "Tank.h"
 
-class PainterTanks: Painter {
+struct PainterTanks: Painter {
 	
-	void drawTank(const Figure &figure, bool draw, char symbol) const noexcept;
+	void drawTank(const Tank &figure, bool draw, char symbol) const noexcept;
 };
 

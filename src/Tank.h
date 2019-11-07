@@ -14,6 +14,7 @@ struct Tank : Figure {
 		Gun = 'o',
 	};
 	
+	using Figure::getPoints;
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
 	std::vector<std::vector<uint8_t>> points =
 		{{1, 3, 1},

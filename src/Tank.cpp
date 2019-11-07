@@ -1,6 +1,7 @@
 #include "Tank.h"
 #include <iostream>
 #include <enums.h>
+#include <cassert>
 
 void Tank::print() {
 	for (uint32_t i = 0; i < points.size(); ++i) {
@@ -48,4 +49,3 @@ void Tank::move(const Direction direction) {
 std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
 
 }
-
