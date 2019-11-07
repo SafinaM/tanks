@@ -13,36 +13,34 @@ void Tank::print() {
 }
 
 void Tank::move(const Direction direction) {
-	{
-		switch (direction) {
-			case Direction::Left:
-				points =
-					{{1, 1, 1},
-					 {3, 2, 1},
-					 {1, 1, 1}};
-				--m_offsetX;
-				break;
-			case Direction::Right:
-				points =
-					{{1, 1, 1},
-					 {1, 2, 3},
-					 {1, 1, 1}};
-				++m_offsetX;
-			case Direction::Up:
-				points =
-					{{1, 3, 1},
-					 {1, 2, 1},
-					 {1, 1, 1}};
-				--m_offsetY;
-				break;
-			case Direction::Down:
-				points =
-					{{1, 1, 1},
-					 {1, 2, 1},
-					 {1, 3, 1}};
-				++m_offsetY;
-				break;
-		}
+	switch (direction) {
+		case Direction::Left:
+			points =
+				{{1, 1, 1},
+				 {3, 2, 1},
+				 {1, 1, 1}};
+			--m_offsetX;
+			break;
+		case Direction::Right:
+			points =
+				{{1, 1, 1},
+				 {1, 2, 3},
+				 {1, 1, 1}};
+			++m_offsetX;
+		case Direction::Up:
+			points =
+				{{1, 3, 1},
+				 {1, 2, 1},
+				 {1, 1, 1}};
+			--m_offsetY;
+			break;
+		case Direction::Down:
+			points =
+				{{1, 1, 1},
+				 {1, 2, 1},
+				 {1, 3, 1}};
+			++m_offsetY;
+			break;
 	}
 }
 

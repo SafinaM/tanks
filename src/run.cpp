@@ -51,7 +51,8 @@ int main() {
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
 				getch();
 			}
-			tank.getPoints();
+			tank.setOrientationType(Orientation::First_0);
+			tank.move(Direction::Left);
 			painter.drawTank(tank, true, ' ');
 			
 			if (kbhit()) {

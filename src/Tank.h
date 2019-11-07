@@ -16,10 +16,6 @@ struct Tank : Figure {
 	
 	using Figure::getPoints;
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
-	std::vector<std::vector<uint8_t>> points =
-		{{1, 3, 1},
-		 {1, 2, 1},
-		 {1, 1, 1}};
 	
 	void move(const Direction direction);
 	
