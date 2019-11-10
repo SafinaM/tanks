@@ -12,38 +12,54 @@ void Tank::print() {
 	}
 }
 
+Tank::Tank() : m_type(m_type = Type::EnemySimple) {
+	m_orientation = Orientation::First_0;
+	points = getPoints(m_orientation);
+	m_Color = Type::EnemySimple; // 1 - Blue
+}
+
 void Tank::move(const Direction direction) {
 	switch (direction) {
-		case Direction::Left:
-			points =
-				{{1, 1, 1},
-				 {3, 2, 1},
-				 {1, 1, 1}};
-			--m_offsetX;
-			break;
-		case Direction::Right:
-			points =
-				{{1, 1, 1},
-				 {1, 2, 3},
-				 {1, 1, 1}};
-			++m_offsetX;
 		case Direction::Up:
-			points =
-				{{1, 3, 1},
-				 {1, 2, 1},
-				 {1, 1, 1}};
+			m_orientation = Orientation::First_0;
 			--m_offsetY;
 			break;
 		case Direction::Down:
-			points =
-				{{1, 1, 1},
-				 {1, 2, 1},
-				 {1, 3, 1}};
+			m_orientation = Orientation::Third_180;
 			++m_offsetY;
 			break;
+		case Direction::Left:
+			--m_offsetX;
+			m_orientation = Orientation::Fourth_270;
+			break;
+		case Direction::Right:
+			m_orientation = Orientation::Second_90;
+			++m_offsetX;
 	}
+	points = getPoints(m_orientation);
 }
 
 std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
-
+	switch (orientation) {
+		case Orientation::First_0:
+			return
+				{{1, 3, 1},
+				 {1, 2, 1},
+				 {1, 1, 1}};
+		case Orientation::Second_90:
+			return
+				{{1, 1, 1},
+				 {1, 2, 3},
+				 {1, 1, 1}};
+		case Orientation::Third_180:
+			return
+				{{1, 1, 1},
+				 {1, 2, 1},
+				 {1, 3, 1}};
+		case Orientation::Fourth_270:
+			return
+				{{1, 1, 1},
+				 {3, 2, 1},
+				 {1, 1, 1}};
+	}
 }

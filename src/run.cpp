@@ -20,7 +20,7 @@ void echo() {
 
 int main() {
 	Tank tank;
-	tank.print();
+//	tank.print();
 	auto start = std::chrono::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
@@ -32,7 +32,8 @@ int main() {
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
-	
+//	tank.setOrientationType(Orientation::First_0);
+	tank.setXY(10, 15);
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -51,34 +52,32 @@ int main() {
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
 				getch();
 			}
-			tank.setOrientationType(Orientation::First_0);
-			tank.move(Direction::Left);
-			painter.drawTank(tank, true, ' ');
+			painter.drawTank(tank);
 			
 			if (kbhit()) {
+				painter.eraseTank(tank);
 				ch = rlutil::getkey();
 				switch (ch) {
 					case 'w':
 					case rlutil::KEY_UP:
-					case rlutil::KEY_SPACE:
+						tank.move(Direction::Up);
 						break;
 					case 'a':
 					case rlutil::KEY_LEFT:
-						
+						tank.move(Direction::Left);
 						break;
 					case 'd':
 					case rlutil::KEY_RIGHT:
-						
+						tank.move(Direction::Right);
 						break;
 					case 's':
 					case rlutil::KEY_DOWN:
-						
+						tank.move(Direction::Down);
 						break;
 					default:
 						break;
 				}
 			}
-			
 			if (ch == 'q')
 				break;
 			
@@ -90,10 +89,13 @@ int main() {
 				break;
 			}
 			
+//			painter.drawTank(tank);
 		} // one figure movement
 		
 	} // main cycle
 	
+	painter.showCursor();
+	painter.clearScreen();
 	echo();
 	
 	return 0;

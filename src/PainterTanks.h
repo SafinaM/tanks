@@ -5,6 +5,7 @@
 
 struct PainterTanks: Painter {
 	
-	void drawTank(const Tank &figure, bool draw, char symbol) const noexcept;
+	void drawTank(const Tank &tank) const noexcept;
+	void eraseTank(const Tank &figure) const noexcept;
 };
 
