@@ -12,10 +12,10 @@ void Tank::print() {
 	}
 }
 
-Tank::Tank() : m_type(m_type = Type::EnemySimple) {
+Tank::Tank(Type type) : m_type(type) {
 	m_orientation = Orientation::First_0;
 	points = getPoints(m_orientation);
-	m_Color = Type::EnemySimple; // 1 - Blue
+	m_Color = m_type;
 }
 
 void Tank::move(const Direction direction) {

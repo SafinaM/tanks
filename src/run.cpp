@@ -18,9 +18,9 @@ void echo() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
 }
 
+
 int main() {
-	Tank tank;
-//	tank.print();
+	Tank tank(Tank::Type::User1);
 	auto start = std::chrono::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
@@ -32,7 +32,6 @@ int main() {
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
-//	tank.setOrientationType(Orientation::First_0);
 	tank.setXY(10, 15);
 	while(true) {
 		if (ch == 'q')
@@ -62,6 +61,10 @@ int main() {
 					case rlutil::KEY_UP:
 						tank.move(Direction::Up);
 						break;
+					case 's':
+					case rlutil::KEY_DOWN:
+						tank.move(Direction::Down);
+						break;
 					case 'a':
 					case rlutil::KEY_LEFT:
 						tank.move(Direction::Left);
@@ -70,10 +73,7 @@ int main() {
 					case rlutil::KEY_RIGHT:
 						tank.move(Direction::Right);
 						break;
-					case 's':
-					case rlutil::KEY_DOWN:
-						tank.move(Direction::Down);
-						break;
+
 					default:
 						break;
 				}
