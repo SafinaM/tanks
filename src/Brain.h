@@ -3,10 +3,10 @@
 #include "Tank.h"
 
 struct Brain {
-	void chooseAction(Tank& tank);
+	Action chooseAction(Tank& tank);
 	
-	void chooseAction(std::vector<Tank>& tanks);
+	Action chooseAction(std::vector<Tank>& tanks);
 	
-	void chooseDirection();
+	Direction chooseDirection();
 	
 };

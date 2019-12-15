@@ -2,6 +2,7 @@
 #include <Painter.h>
 #include "Tank.h"
 #include "PainterTanks.h"
+#include "Brain.h"
 
 // TODO noecho for windows
 void noecho() {
@@ -21,18 +22,21 @@ void echo() {
 
 int main() {
 	Tank tank(Tank::Type::User1);
+	Tank oppTank(Tank::Type::EnemySimple);
+	Brain brain;
+	
 	auto start = std::chrono::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
 	
 	painter.drawHead(" T A N K S ");
 	int ch = getch();
-	
 	painter.clearScreen();
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
 	tank.setXY(10, 15);
+	oppTank.setXY(5, 10);
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -52,6 +56,7 @@ int main() {
 				getch();
 			}
 			painter.drawTank(tank);
+			painter.drawTank(oppTank);
 			
 			if (kbhit()) {
 				painter.eraseTank(tank);
@@ -73,7 +78,6 @@ int main() {
 					case rlutil::KEY_RIGHT:
 						tank.move(Direction::Right);
 						break;
-
 					default:
 						break;
 				}
@@ -81,14 +85,25 @@ int main() {
 			if (ch == 'q')
 				break;
 			
+//			Action action = brain.chooseAction(oppTank);
+//			if (action == Action::ChooseDirection) {
+//				direction = brain.chooseDirection();
+//			} else
+
+			
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > 0.1) {
 				start = std::chrono::system_clock::now();
 				diff.zero();
+				Direction direction = brain.chooseDirection();
+				if (direction == Direction::Down || direction == Direction::Right) {
+					painter.eraseTank(oppTank);
+					oppTank.move(direction);
+				}
 				break;
+				
 			}
-			
 //			painter.drawTank(tank);
 		} // one figure movement
 		

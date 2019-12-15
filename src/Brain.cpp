@@ -3,16 +3,17 @@
 #include <enums.h>
 #include <cstdint>
 
-void Brain::chooseAction(Tank& tank) {
+Action Brain::chooseAction(Tank& tank) {
+	uint32_t numAction = helper::generateNumber(0, 1);
+	Action action = static_cast<Action>(numAction);
+}
+
+Action Brain::chooseAction(std::vector<Tank>& tanks) {
 
 }
 
-void Brain::chooseAction(std::vector<Tank>& tanks) {
-
-}
-
-void Brain::chooseDirection() {
+Direction Brain::chooseDirection() {
 	
 	auto num = helper::generateNumber(0, 3);
-	Direction direction = static_cast<Direction>(num);
+	return static_cast<Direction>(num);
 }

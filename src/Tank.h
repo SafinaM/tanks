@@ -13,7 +13,8 @@ struct Tank : Figure {
 		EnemySimple     = 1,
 		EnemyFast       = 4,
 		EnemyStrong     = 5,
-		EnemyStrongFast = 4
+		EnemyStrongFast = 4,
+		Smart           = 4
 	};
 	
 	Tank(Type type = Type::EnemySimple);
