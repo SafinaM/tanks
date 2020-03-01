@@ -31,8 +31,12 @@ int main() {
 	
 	painter.drawHead(" T A N K S ");
 	int ch = getch();
-	painter.clearScreen();
+	painter.setScreenSize();
 	
+	painter.clearScreen();
+	int w = painter.getWinWidth();
+	int h = painter.getWinHeight();
+
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
 	tank.setXY(10, 15);
@@ -43,6 +47,8 @@ int main() {
 		
 		while (true) {
 			bool wasStopped = false;
+			int w = painter.getWinWidth();
+			int h = painter.getWinHeight();
 			painter.setScreenSize();
 			if (ch == 'p') {
 				painter.clearScreen();
@@ -53,7 +59,10 @@ int main() {
 			if (!painter.isSizeOk()) {
 				painter.clearScreen();
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
+				std::cout << "screen width = " << w << std::endl;
+				std::cout << "screen height = " << h << std::endl;
 				getch();
+				painter.clearScreen();
 			}
 			painter.drawTank(tank);
 			painter.drawTank(oppTank);
@@ -76,6 +85,9 @@ int main() {
 						break;
 					case 'd':
 					case rlutil::KEY_RIGHT:
+						tank.move(Direction::Right);
+						break;
+					case rlutil::KEY_SPACE:
 						tank.move(Direction::Right);
 						break;
 					default:

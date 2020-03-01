@@ -20,8 +20,8 @@ struct Tank : Figure {
 	Tank(Type type = Type::EnemySimple);
 	enum TankSymbol : char {
 		Empty = ' ',
-		Cabin = 'O',
-		Gun = 'o',
+		Cabin = '/',
+		Gun = '\\',
 	};
 	using Figure::getPoints;
 	

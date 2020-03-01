@@ -4,11 +4,11 @@
 #include <cstdint>
 
 Action Brain::chooseAction(Tank& tank) {
-	uint32_t numAction = helper::generateNumber(0, 1);
-	Action action = static_cast<Action>(numAction);
+	uint32_t numAction = helper::generateNumber(0, 2);
+	return static_cast<Action>(numAction);
 }
 
-Action Brain::chooseAction(std::vector<Tank>& tanks) {
+std::vector<Action> Brain::chooseActions(std::vector<Tank>& tanks) {
 
 }
 

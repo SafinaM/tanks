@@ -43,23 +43,19 @@ std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const
 	switch (orientation) {
 		case Orientation::First_0:
 			return
-				{{1, 3, 1},
-				 {1, 2, 1},
-				 {1, 1, 1}};
+				{{2, 3},
+				 {1, 1}};
 		case Orientation::Second_90:
 			return
-				{{1, 1, 1},
-				 {1, 2, 3},
-				 {1, 1, 1}};
+				{{1, 3},
+				 {1, 2}};
 		case Orientation::Third_180:
 			return
-				{{1, 1, 1},
-				 {1, 2, 1},
-				 {1, 3, 1}};
+				{{1, 1},
+				 {3, 2}};
 		case Orientation::Fourth_270:
 			return
-				{{1, 1, 1},
-				 {3, 2, 1},
-				 {1, 1, 1}};
+				{{2, 1},
+				 {3, 1}};
 	}
 }
