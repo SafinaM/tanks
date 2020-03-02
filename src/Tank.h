@@ -1,9 +1,12 @@
 #pragma once
+
+#include "Shell.h"
+
+#include <Figure.h>
+
 #include <vector>
 #include <cstdint>
 #include <string>
-
-#include <Figure.h>
 
 struct Tank : Figure {
 	
@@ -20,17 +23,22 @@ struct Tank : Figure {
 	Tank(Type type = Type::EnemySimple);
 	enum TankSymbol : char {
 		Empty = ' ',
-		Cabin = '/',
-		Gun = '\\',
+		Left = '/',
+		Right = '\\',
 	};
 	using Figure::getPoints;
 	
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
+	
+	void shoot() {
+	
+	
+	}
 	
 	void move(const Direction direction);
 	
 	void print();
 	
 	Type m_type = EnemySimple;
-
+	std::vector<Shell> shells;
 };

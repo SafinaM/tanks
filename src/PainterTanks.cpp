@@ -25,14 +25,14 @@ void PainterTanks::drawTank(const Tank &tank) const noexcept {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
-					Tank::TankSymbol::Cabin,
+					Tank::TankSymbol::Left,
 					color,
 					textColor);
 			} else if (points[i][j] == 3) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
-					Tank::TankSymbol::Gun,
+					Tank::TankSymbol::Right,
 					color,
 					textColor);
 			}

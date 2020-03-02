@@ -1,9 +1,11 @@
+#include "Shell.h"
 #include "Tank.h"
-#include <iostream>
 #include <enums.h>
+
+#include <iostream>
 #include <cassert>
 
-void Tank::print() {
+void Shell::print() {
 	for (uint32_t i = 0; i < points.size(); ++i) {
 		for (uint32_t j = 0; j < points[0].size(); ++j) {
 			std::cout << +points[i][j];
@@ -12,13 +14,13 @@ void Tank::print() {
 	}
 }
 
-Tank::Tank(Type type) : m_type(type) {
+Shell::Shell(Type type) : m_type(type) {
 	m_orientation = Orientation::First_0;
 	points = getPoints(m_orientation);
 	m_Color = m_type;
 }
 
-void Tank::move(const Direction direction) {
+void Shell::move(const Direction direction) {
 	switch (direction) {
 		case Direction::Up:
 			m_orientation = Orientation::First_0;
@@ -29,8 +31,8 @@ void Tank::move(const Direction direction) {
 			++m_offsetY;
 			break;
 		case Direction::Left:
-			m_orientation = Orientation::Fourth_270;
 			--m_offsetX;
+			m_orientation = Orientation::Fourth_270;
 			break;
 		case Direction::Right:
 			m_orientation = Orientation::Second_90;
@@ -39,29 +41,22 @@ void Tank::move(const Direction direction) {
 	points = getPoints(m_orientation);
 }
 
-void Tank::shoot() {
-
-}
-
-std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
+std::vector<std::vector<uint8_t>> Shell::getPoints(Orientation orientation) const {
 	switch (orientation) {
 		case Orientation::First_0:
 			return
-				{{2, 3},
-				 {1, 1}};
+				{{2, 3}};
 		case Orientation::Second_90:
 			return
-				{{1, 3},
-				 {1, 2}};
+				{{3},
+				 {2}};
 		case Orientation::Third_180:
 			return
-				{{1, 1},
-				 {3, 2}};
+				{{3, 2}};
 		case Orientation::Fourth_270:
 			return
-				{{2, 1},
-				 {3, 1}};
+				{{2},
+				 {3}};
 	}
 }
-
 
