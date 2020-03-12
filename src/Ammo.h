@@ -1,0 +1,59 @@
+#pragma once
+
+#include <Figure.h>
+
+#include <unordered_map>
+
+// explosive artillery projectile or bomb.
+struct Ammo : Figure {
+	
+	// speed, maybe it will be m
+	// milliseconds
+	enum AmmoType : uint32_t {
+		SlowSingle        = 0,
+		FastSingle        = 1,
+		FastDouble        = 2,
+		FastDoubleStrong  = 3,
+		SuperFastNStrong  = 4,
+	};
+	
+	Ammo(AmmoType type = AmmoType::SlowSingle);
+	enum GunSymbol : char {
+		Empty = ' ',
+		Left = '/',
+		Right = '\\',
+	};
+	
+	uint32_t id = 0;
+	
+	using Figure::getPoints;
+	
+	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
+	
+	void setAmmoType(const AmmoType type);
+	
+	void debugPrint() const;
+	
+	float getSpeed() const;
+	
+	float getNumber() const;
+	
+	bool isActive() const;
+	
+	void setActiveFlag(bool isActive);
+	
+	uint32_t getId() const;
+	
+	AmmoType ammoType = SlowSingle;
+	
+	// speed of every type
+	static const std::unordered_map<uint32_t, float> speedByType;
+	
+	// speed of every type
+	static const std::unordered_map<uint32_t, uint32_t> numberByType;
+	
+	static constexpr uint32_t maxNumberOfAmmo = 4;
+private:
+	
+	bool m_isActive = false;
+};

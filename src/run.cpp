@@ -1,8 +1,10 @@
-#include <thread>
 #include <Painter.h>
 #include "Tank.h"
 #include "PainterTanks.h"
 #include "Brain.h"
+
+#include <thread>
+#include <future>
 
 // TODO noecho for windows
 void noecho() {
@@ -19,10 +21,18 @@ void echo() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
 }
 
+void shoot(Tank& tank) {
+	if (kbhit()) {
+		char ch = rlutil::getkey();
+		if (ch == rlutil::KEY_SPACE) {
+			tank.shoot();
+		}
+	}
+}
 
 int main() {
-	Tank tank(Tank::Type::User1);
-	Tank oppTank(Tank::Type::EnemySimple);
+	Tank tank(Tank::TankType::User1);
+	Tank oppTank(Tank::TankType::EnemySimple);
 	Brain brain;
 	
 	auto start = std::chrono::system_clock::now();
@@ -71,6 +81,9 @@ int main() {
 				painter.eraseTank(tank);
 				ch = rlutil::getkey();
 				switch (ch) {
+					case rlutil::KEY_SPACE:
+						tank.shoot();
+						break;
 					case 'w':
 					case rlutil::KEY_UP:
 						tank.move(Direction::Up);
@@ -87,13 +100,11 @@ int main() {
 					case rlutil::KEY_RIGHT:
 						tank.move(Direction::Right);
 						break;
-					case rlutil::KEY_SPACE:
-						tank.move(Direction::Right);
-						break;
 					default:
 						break;
 				}
 			}
+			
 			if (ch == 'q')
 				break;
 			

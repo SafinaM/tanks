@@ -12,10 +12,26 @@ void Tank::print() {
 	}
 }
 
-Tank::Tank(Type type) : m_type(type) {
-	m_orientation = Orientation::First_0;
+Tank::Tank(TankType type) : m_tankType(type), Figure(m_orientation) {
+	
 	points = getPoints(m_orientation);
-	m_Color = m_type;
+	
+	auto colorIt = colorByTankType.find(m_tankType);
+	assert(colorIt != colorByTankType.end());
+	m_Color = colorIt->second;
+	
+	m_id = ++m_numberOfTanks;
+	
+	auto it = ammoTypeByTankType.find(m_tankType);
+	assert(it != ammoTypeByTankType.end());
+	m_ammoType = it->second;
+	// for user tanks we take max == 4, for opposite tanks we always take 1
+	const uint32_t size = m_tankType == User1 || m_tankType == User2 ? Ammo::maxNumberOfAmmo: 1;
+	m_ammo.resize(size);
+	for (uint32_t i = 0; i < size; ++i) {
+		Ammo am(m_ammoType);
+		m_ammo.emplace_back(std::move(am));
+	}
 }
 
 void Tank::move(const Direction direction) {
@@ -40,7 +56,39 @@ void Tank::move(const Direction direction) {
 }
 
 void Tank::shoot() {
+	std::cout << "Shoot!" << std::endl;
+	auto it = Ammo::numberByType.find(m_ammoType);
 
+	assert(it != Ammo::numberByType.end());
+
+	m_maxAmmoCurrent = it->second;
+	
+	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
+		if (m_ammo[i].isActive())
+			continue;
+		// change type
+		m_ammo[i].setAmmoType(m_ammoType);
+		m_ammo[i].setOrientationType(this->m_orientation);
+		m_ammo[i].setXY(this->getXOffset(), this->getYOffset());
+		m_ammo[i].setColor(this->getColor());
+		m_ammo[i].setActiveFlag(true);
+	}
+}
+
+void Tank::setNextAmmoType() {
+	if (m_ammoType == Ammo::SlowSingle) {
+		setAmmoType(Ammo::FastSingle);
+	} else if (m_ammoType == Ammo::FastSingle) {
+		setAmmoType(Ammo::FastDouble);
+	} else if (m_ammoType == Ammo::FastDouble) {
+		setAmmoType(Ammo::FastDoubleStrong);
+	} else if (m_ammoType == Ammo::FastDoubleStrong) {
+		setAmmoType(Ammo::SuperFastNStrong);
+	}
+}
+
+void Tank::setAmmoType(Ammo::AmmoType ammoType) {
+	m_ammoType = ammoType;
 }
 
 std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
@@ -64,4 +112,25 @@ std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const
 	}
 }
 
+const std::unordered_map<Tank::TankType, Ammo::AmmoType, std::hash<size_t>> Tank::ammoTypeByTankType = {
+	{Tank::User1,           Ammo::SlowSingle},
+	{Tank::User2,           Ammo::SlowSingle},
+	{Tank::EnemySimple,     Ammo::SlowSingle},
+	{Tank::EnemyFast,       Ammo::FastSingle},
+	{Tank::EnemyStrong,     Ammo::SlowSingle},
+	{Tank::EnemyStrongFast, Ammo::FastSingle},
+	{Tank::Smart,           Ammo::SlowSingle},
+};
+
+const std::unordered_map<Tank::TankType, uint32_t, std::hash<size_t>> Tank::colorByTankType = {
+	{Tank::User1,           2},
+	{Tank::User2,           3},
+	{Tank::EnemySimple,     1},
+	{Tank::EnemyFast,       4},
+	{Tank::EnemyStrong,     5},
+	{Tank::EnemyStrongFast, 4},
+	{Tank::Smart,           4},
+};
+
+uint32_t Tank::m_numberOfTanks = 0;
 

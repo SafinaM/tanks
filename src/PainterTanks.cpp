@@ -9,11 +9,11 @@ void PainterTanks::drawTank(const Tank &tank) const noexcept {
 	const int yOffset = tank.getYOffset();
 	uint32_t color = tank.getColor();
 	uint32_t textColor = 0;
-	
+
 	for (auto i = 0; i < points.size(); ++i) {
 		for (auto j = 0; j < points[0].size(); ++j) {
 			assert(j + xOffset + xOffsetBoard >= 0);
-			assert(i + yOffset +  yOffsetBoard >= 0);
+			assert(i + yOffset + yOffsetBoard >= 0);
 			if (points[i][j] == 1) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
