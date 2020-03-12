@@ -12,7 +12,7 @@ void Tank::print() {
 	}
 }
 
-Tank::Tank(TankType type) : m_tankType(type), Figure(m_orientation) {
+Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 	
 	points = getPoints(m_orientation);
 	
@@ -56,16 +56,17 @@ void Tank::move(const Direction direction) {
 }
 
 void Tank::shoot() {
-	std::cout << "Shoot!" << std::endl;
 	auto it = Ammo::numberByType.find(m_ammoType);
-
 	assert(it != Ammo::numberByType.end());
 
 	m_maxAmmoCurrent = it->second;
 	
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
-		if (m_ammo[i].isActive())
+		if (m_ammo[i].isActive()) {
+			std::cout << "Shell is flying!" << std::endl;
 			continue;
+		}
+		std::cout << "Shoot!" << std::endl;
 		// change type
 		m_ammo[i].setAmmoType(m_ammoType);
 		m_ammo[i].setOrientationType(this->m_orientation);
