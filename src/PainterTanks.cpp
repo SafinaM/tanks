@@ -4,20 +4,20 @@
 
 
 void PainterTanks::drawTank(const Tank& tank) const noexcept {
-	drawFigure(tank);
+	drawFigure(tank, 0);
 }
 
 void PainterTanks::eraseTank(const Tank& figure) const noexcept {
 	eraseFigure(figure);
 }
 
-void PainterTanks::drawAmmo(const Tank& tank) const noexcept {
+void PainterTanks::drawAmmo(const Tank &tank, int color) const noexcept {
 	const auto& ammo = tank.getAmmo();
 	const size_t size = ammo.size();
 	
 	for (auto i = 0; i < size; ++i) {
 		if (ammo[i].isActive()) {
-			drawFigure(ammo[i]);
+			drawFigure(ammo[i], color);
 		}
 	}
 }
@@ -33,12 +33,17 @@ void PainterTanks::eraseAmmo(const Tank& tank) const noexcept {
 	}
 }
 
-void PainterTanks::drawFigure(const Figure& figure) const noexcept {
+void PainterTanks::drawFigure(const Figure &figure, int color) const noexcept {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
 	const int yOffset = figure.getYOffset();
-	uint32_t color = figure.getColor();
+	
+	// by default we take color from figure
+	uint32_t figureColor = figure.getColor();
+	if (color > 0)
+		figureColor = color;
+	
 	uint32_t textColor = 0;
 	
 	for (auto i = 0; i < points.size(); ++i) {
@@ -50,21 +55,21 @@ void PainterTanks::drawFigure(const Figure& figure) const noexcept {
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
 					Tank::TankSymbol::Empty,
-					color,
+					figureColor,
 					textColor);
 			} else if (points[i][j] == 2) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
 					Tank::TankSymbol::Left,
-					color,
+					figureColor,
 					textColor);
 			} else if (points[i][j] == 3) {
 				drawPoint(
 					j + xOffset + xOffsetBoard,
 					i + yOffset + yOffsetBoard,
 					Tank::TankSymbol::Right,
-					color,
+					figureColor,
 					textColor);
 			}
 		}
