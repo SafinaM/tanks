@@ -15,32 +15,12 @@ void Ammo::debugPrint() const {
 }
 
 Ammo::Ammo(AmmoType type) : ammoType(type), Figure(m_orientation) {
+	points = getPoints(m_orientation);
 	m_Color = ammoType;
 }
 
-//void Ammo::move(const Direction direction) {
-//	switch (direction) {
-//		case Direction::Up:
-//			m_orientation = Orientation::First_0;
-//			--m_offsetY;
-//			break;
-//		case Direction::Down:
-//			m_orientation = Orientation::Third_180;
-//			++m_offsetY;
-//			break;
-//		case Direction::Left:
-//			--m_offsetX;
-//			m_orientation = Orientation::Fourth_270;
-//			break;
-//		case Direction::Right:
-//			m_orientation = Orientation::Second_90;
-//			++m_offsetX;
-//	}
-//	points = getPoints(m_orientation);
-//}
-
 std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const {
-	switch (m_orientation) {
+	switch (orientation) {
 		case Orientation::First_0:
 			return
 				{{2, 3}};
@@ -56,6 +36,10 @@ std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const
 				{{2},
 				 {3}};
 	}
+}
+
+void Ammo::setPoints(Orientation orientation) noexcept {
+	points = getPoints(orientation);
 }
 
 void Ammo::setAmmoType(const AmmoType type) {

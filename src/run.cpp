@@ -36,6 +36,7 @@ int main() {
 	Brain brain;
 	
 	auto start = std::chrono::system_clock::now();
+	auto start2 = std::chrono::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
 	
@@ -105,6 +106,7 @@ int main() {
 				}
 			}
 			
+			
 			if (ch == 'q')
 				break;
 			
@@ -115,7 +117,19 @@ int main() {
 
 			
 			auto end = std::chrono::system_clock::now();
+			auto end2 = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
+			
+			std::chrono::duration<double> diff2 = end2-start2;
+			
+			painter.drawAmmo(tank);
+			if (diff2.count() > 0.05) {
+				painter.eraseAmmo(tank);
+				tank.moveAmmo();
+				start2 = std::chrono::system_clock::now();
+				diff2.zero();
+			}
+			
 			if (diff.count() > 0.1) {
 				start = std::chrono::system_clock::now();
 				diff.zero();

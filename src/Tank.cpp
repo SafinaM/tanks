@@ -32,9 +32,15 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 		Ammo am(m_ammoType);
 		m_ammo.emplace_back(std::move(am));
 	}
+	assert(!m_ammo.empty());
+	setAmmoSpeed(m_ammo[0].getSpeed());
+	
+	auto speedIt = speedByTankType.find(m_tankType);
+	assert(speedIt != speedByTankType.end());
+	m_tankSpeed = colorIt->second;
 }
 
-void Tank::move(const Direction direction) {
+void Tank::move(const Direction direction) noexcept {
 	switch (direction) {
 		case Direction::Up:
 			m_orientation = Orientation::First_0;
@@ -51,28 +57,44 @@ void Tank::move(const Direction direction) {
 		case Direction::Right:
 			m_orientation = Orientation::Second_90;
 			++m_offsetX;
+		default:
+			break;
 	}
 	points = getPoints(m_orientation);
 }
 
 void Tank::shoot() {
-	auto it = Ammo::numberByType.find(m_ammoType);
-	assert(it != Ammo::numberByType.end());
-
-	m_maxAmmoCurrent = it->second;
+	// set m_maxAmmoCurrent
+	setMaxAmmoCurrent();
 	
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
 		if (m_ammo[i].isActive()) {
-			std::cout << "Shell is flying!" << std::endl;
+//			std::cout << "Shell is flying!" << std::endl;
 			continue;
 		}
-		std::cout << "Shoot!" << std::endl;
+//		std::cout << "Shoot!" << std::endl;
 		// change type
 		m_ammo[i].setAmmoType(m_ammoType);
-		m_ammo[i].setOrientationType(this->m_orientation);
-		m_ammo[i].setXY(this->getXOffset(), this->getYOffset());
-		m_ammo[i].setColor(this->getColor());
+//		std::cout << "orientation = "<< static_cast<int>(m_orientation) << std::endl;
+		m_ammo[i].setOrientationTypeAndDirection(m_orientation);
+		m_ammo[i].setPoints(m_orientation);
+		m_ammo[i].setXY(getXOffset(), getYOffset());
+		m_ammo[i].setColor(getColor());
 		m_ammo[i].setActiveFlag(true);
+		setAmmoSpeed(m_ammo[i].getSpeed());
+	}
+}
+
+void Tank::moveAmmo() {
+	// set m_maxAmmoCurrent
+	setMaxAmmoCurrent();
+	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
+		if (m_ammo[i].isActive()) {
+			const auto direction = m_ammo[i].getDirection();
+			m_ammo[i].move(direction);
+//			std::cout << "Shell is moving!" << std::endl;
+			continue;
+		}
 	}
 }
 
@@ -90,6 +112,10 @@ void Tank::setNextAmmoType() {
 
 void Tank::setAmmoType(Ammo::AmmoType ammoType) {
 	m_ammoType = ammoType;
+}
+
+std::vector<Ammo> Tank::getAmmo() const noexcept {
+	return m_ammo;
 }
 
 std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
@@ -133,5 +159,37 @@ const std::unordered_map<Tank::TankType, uint32_t, std::hash<size_t>> Tank::colo
 	{Tank::Smart,           4},
 };
 
+const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::speedByTankType = {
+	{Tank::User1,           0.1f},
+	{Tank::User2,           0.1f},
+	{Tank::EnemySimple,     0.1f},
+	{Tank::EnemyFast,       0.05f},
+	{Tank::EnemyStrong,     0.1f},
+	{Tank::EnemyStrongFast, 0.5f},
+	{Tank::Smart,           0.1f},
+};
+
 uint32_t Tank::m_numberOfTanks = 0;
 
+void Tank::setMaxAmmoCurrent() {
+	auto it = Ammo::numberByType.find(m_ammoType);
+	assert(it != Ammo::numberByType.end());
+	m_maxAmmoCurrent = it->second;
+}
+
+float Tank::getAmmoSpeed() const noexcept {
+	return m_tankSpeed;
+}
+
+float Tank::getTankSpeed() const noexcept {
+	return m_ammoSpeed;
+}
+
+
+void Tank::setAmmoSpeed(float speed) noexcept {
+	m_ammoSpeed = speed;
+}
+
+void Tank::setTankSpeed(float speed) noexcept {
+	m_tankSpeed = speed;
+}

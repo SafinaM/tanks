@@ -18,17 +18,12 @@ struct Ammo : Figure {
 	};
 	
 	Ammo(AmmoType type = AmmoType::SlowSingle);
-	enum GunSymbol : char {
-		Empty = ' ',
-		Left = '/',
-		Right = '\\',
-	};
 	
 	uint32_t id = 0;
 	
-	using Figure::getPoints;
-	
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
+	
+	void setPoints(Orientation orientation) noexcept;
 	
 	void setAmmoType(const AmmoType type);
 	
