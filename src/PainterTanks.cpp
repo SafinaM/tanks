@@ -39,12 +39,12 @@ void PainterTanks::drawFigure(const Figure &figure, int color) const noexcept {
 	const int xOffset = figure.getXOffset();
 	const int yOffset = figure.getYOffset();
 	
-	// by default we take color from figure
+	// by default we take color from figure, figureColor must be > 0
 	uint32_t figureColor = figure.getColor();
 	if (color > 0)
 		figureColor = color;
 	
-	uint32_t textColor = 0;
+	uint32_t textColor = TextColor::TC_BLACK;
 	
 	for (auto i = 0; i < points.size(); ++i) {
 		for (auto j = 0; j < points[0].size(); ++j) {
@@ -82,8 +82,8 @@ void PainterTanks::eraseFigure(const Figure &figure) const noexcept {
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
 	const int yOffset = figure.getYOffset();
-	uint32_t color = 0;
-	uint32_t textColor = 0;
+	uint32_t color = BackgroundColor::BC_BLACK;
+	uint32_t textColor = TextColor::TC_BLACK;
 	
 	for (auto i = 0; i < points.size(); ++i) {
 		for (auto j = 0; j < points[0].size(); ++j) {

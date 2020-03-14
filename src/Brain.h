@@ -8,5 +8,4 @@ struct Brain {
 	std::vector<Action> chooseActions(std::vector<Tank>& tanks);
 	
 	Direction chooseDirection();
-	
 };

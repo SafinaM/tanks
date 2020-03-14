@@ -122,8 +122,7 @@ int main() {
 			
 			std::chrono::duration<double> diff2 = end2-start2;
 			
-			// color is yellow
-			painter.drawAmmo(tank, 6);
+			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
 			if (diff2.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();

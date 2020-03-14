@@ -7,8 +7,6 @@
 // explosive artillery projectile or bomb.
 struct Ammo : Figure {
 	
-	// speed, maybe it will be m
-	// milliseconds
 	enum AmmoType : uint32_t {
 		SlowSingle        = 0,
 		FastSingle        = 1,
