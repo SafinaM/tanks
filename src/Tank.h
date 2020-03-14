@@ -66,8 +66,6 @@ private:
 	float m_ammoSpeed = 1;
 	
 	void setMaxAmmoCurrent();
+	void setTankSpeed();
 	
-	void setAmmoSpeed(float speed) noexcept;
-	
-	void setTankSpeed(float speed) noexcept;
 };

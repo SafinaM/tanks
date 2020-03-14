@@ -33,11 +33,9 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 		m_ammo.emplace_back(std::move(am));
 	}
 	assert(!m_ammo.empty());
-	setAmmoSpeed(m_ammo[0].getSpeed());
 	
-	auto speedIt = speedByTankType.find(m_tankType);
-	assert(speedIt != speedByTankType.end());
-	m_tankSpeed = colorIt->second;
+	m_ammoSpeed = m_ammo[0].getSpeed();
+	setTankSpeed();
 }
 
 void Tank::move(const Direction direction) noexcept {
@@ -81,7 +79,7 @@ void Tank::shoot() {
 		m_ammo[i].setXY(getXOffset(), getYOffset());
 		m_ammo[i].setColor(getColor());
 		m_ammo[i].setActiveFlag(true);
-		setAmmoSpeed(m_ammo[i].getSpeed());
+		m_ammoSpeed = m_ammo[i].getSpeed();
 	}
 }
 
@@ -107,6 +105,9 @@ void Tank::setNextAmmoType() {
 		setAmmoType(Ammo::FastDoubleStrong);
 	} else if (m_ammoType == Ammo::FastDoubleStrong) {
 		setAmmoType(Ammo::SuperFastNStrong);
+	} else {
+		std::cerr << "do not have such ammotype" << std::endl;
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -177,19 +178,16 @@ void Tank::setMaxAmmoCurrent() {
 	m_maxAmmoCurrent = it->second;
 }
 
-float Tank::getAmmoSpeed() const noexcept {
-	return m_tankSpeed;
+void Tank::setTankSpeed() {
+	auto speedIt = speedByTankType.find(m_tankType);
+	assert(speedIt != speedByTankType.end());
+	m_tankSpeed = speedIt->second;
 }
 
-float Tank::getTankSpeed() const noexcept {
+float Tank::getAmmoSpeed() const noexcept {
 	return m_ammoSpeed;
 }
 
-
-void Tank::setAmmoSpeed(float speed) noexcept {
-	m_ammoSpeed = speed;
-}
-
-void Tank::setTankSpeed(float speed) noexcept {
-	m_tankSpeed = speed;
+float Tank::getTankSpeed() const noexcept {
+	return m_tankSpeed;
 }

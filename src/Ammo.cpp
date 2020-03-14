@@ -66,17 +66,17 @@ void Ammo::setActiveFlag(bool isActive) {
 	m_isActive = isActive;
 }
 
-const std::unordered_map<uint32_t, float> Ammo::speedByType = {
-	{static_cast<uint32_t>(Ammo::SlowSingle), 0.3f},
-	{static_cast<uint32_t>(Ammo::FastSingle), 0.2f},
-	{static_cast<uint32_t>(Ammo::FastDouble), 0.2f},
-	{static_cast<uint32_t>(Ammo::FastDoubleStrong), 0.2f},
-	{static_cast<uint32_t>(Ammo::SuperFastNStrong), 0.15f}};
+const std::unordered_map<Ammo::AmmoType, float, std::hash<size_t>> Ammo::speedByType = {
+	{Ammo::SlowSingle, 0.1f},
+	{Ammo::FastSingle, 0.05f},
+	{Ammo::FastDouble, 0.05f},
+	{Ammo::FastDoubleStrong, 0.05f},
+	{Ammo::SuperFastNStrong, 0.05f}};
 
-const std::unordered_map<uint32_t, uint32_t> Ammo::numberByType = {
-	{static_cast<uint32_t>(Ammo::SlowSingle), 1},
-	{static_cast<uint32_t>(Ammo::FastSingle), 1},
-	{static_cast<uint32_t>(Ammo::FastDouble), 2},
-	{static_cast<uint32_t>(Ammo::FastDoubleStrong), 2},
-	{static_cast<uint32_t>(Ammo::SuperFastNStrong), 4}};
+const std::unordered_map<Ammo::AmmoType, uint32_t, std::hash<size_t>> Ammo::numberByType = {
+	{Ammo::SlowSingle, 1},
+	{Ammo::FastSingle, 1},
+	{Ammo::FastDouble, 2},
+	{Ammo::FastDoubleStrong, 2},
+	{Ammo::SuperFastNStrong, 4}};
 

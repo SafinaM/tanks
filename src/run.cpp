@@ -122,15 +122,16 @@ int main() {
 			
 			std::chrono::duration<double> diff2 = end2-start2;
 			
-			painter.drawAmmo(tank);
-			if (diff2.count() > 0.05) {
+			// color is yellow
+			painter.drawAmmo(tank, 6);
+			if (diff2.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();
 				start2 = std::chrono::system_clock::now();
 				diff2.zero();
 			}
 			
-			if (diff.count() > 0.1) {
+			if (diff.count() > oppTank.getTankSpeed()) {
 				start = std::chrono::system_clock::now();
 				diff.zero();
 				Direction direction = brain.chooseDirection();

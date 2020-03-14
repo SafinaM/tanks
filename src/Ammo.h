@@ -42,10 +42,10 @@ struct Ammo : Figure {
 	AmmoType ammoType = SlowSingle;
 	
 	// speed of every type
-	static const std::unordered_map<uint32_t, float> speedByType;
+	static const std::unordered_map<Ammo::AmmoType, float, std::hash<size_t>> speedByType;
 	
 	// speed of every type
-	static const std::unordered_map<uint32_t, uint32_t> numberByType;
+	static const std::unordered_map<Ammo::AmmoType, uint32_t, std::hash<size_t>> numberByType;
 	
 	static constexpr uint32_t maxNumberOfAmmo = 4;
 private:
