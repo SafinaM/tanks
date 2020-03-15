@@ -25,8 +25,10 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 	auto it = ammoTypeByTankType.find(m_tankType);
 	assert(it != ammoTypeByTankType.end());
 	m_ammoType = it->second;
+	
 	// for user tanks we take max == 4, for opposite tanks we always take 1
-	const uint32_t size = m_tankType == User1 || m_tankType == User2 ? Ammo::maxNumberOfAmmo: 1;
+	const uint32_t size = m_tankType == (User1 || m_tankType == User2) ? Ammo::maxNumberOfAmmo : 1;
+	
 	m_ammo.resize(size);
 	for (uint32_t i = 0; i < size; ++i) {
 		Ammo am(m_ammoType);
@@ -62,52 +64,49 @@ void Tank::move(const Direction direction) noexcept {
 }
 
 void Tank::shoot() {
-	// set m_maxAmmoCurrent
 	setMaxAmmoCurrent();
-	
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
 		if (m_ammo[i].isActive()) {
-//			std::cout << "Shell is flying!" << std::endl;
 			continue;
 		}
-//		std::cout << "Shoot!" << std::endl;
-		// change type
 		m_ammo[i].setAmmoType(m_ammoType);
-//		std::cout << "orientation = "<< static_cast<int>(m_orientation) << std::endl;
 		m_ammo[i].setOrientationTypeAndDirection(m_orientation);
 		m_ammo[i].setPoints(m_orientation);
 		m_ammo[i].setXY(getXOffset(), getYOffset());
-		m_ammo[i].setColor(getColor());
+//		m_ammo[i].setColor(getColor());
 		m_ammo[i].setActiveFlag(true);
 		m_ammoSpeed = m_ammo[i].getSpeed();
+		break;
 	}
 }
 
 void Tank::moveAmmo() {
-	// set m_maxAmmoCurrent
 	setMaxAmmoCurrent();
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
 		if (m_ammo[i].isActive()) {
 			const auto direction = m_ammo[i].getDirection();
 			m_ammo[i].move(direction);
-//			std::cout << "Shell is moving!" << std::endl;
-			continue;
 		}
 	}
 }
 
 void Tank::setNextAmmoType() {
-	if (m_ammoType == Ammo::SlowSingle) {
-		setAmmoType(Ammo::FastSingle);
-	} else if (m_ammoType == Ammo::FastSingle) {
-		setAmmoType(Ammo::FastDouble);
-	} else if (m_ammoType == Ammo::FastDouble) {
-		setAmmoType(Ammo::FastDoubleStrong);
-	} else if (m_ammoType == Ammo::FastDoubleStrong) {
-		setAmmoType(Ammo::SuperFastNStrong);
-	} else {
-		std::cerr << "do not have such ammotype" << std::endl;
-		exit(EXIT_FAILURE);
+	switch(m_ammoType) {
+		case Ammo::SlowSingle:
+			setAmmoType(Ammo::FastSingle);
+			break;
+		case Ammo::FastSingle:
+			setAmmoType(Ammo::FastDouble);
+			break;
+		case Ammo::FastDouble:
+			setAmmoType(Ammo::FastDoubleStrong);
+			break;
+		case Ammo::FastDoubleStrong:
+			setAmmoType(Ammo::SuperFastNStrong);
+			break;
+		default:
+			std::cerr << "do not have such ammotype" << std::endl;
+			exit(EXIT_FAILURE);
 	}
 }
 
@@ -160,7 +159,7 @@ const std::unordered_map<Tank::TankType, uint32_t, std::hash<size_t>> Tank::colo
 	{Tank::Smart,           4},
 };
 
-const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::speedByTankType = {
+const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::tankSpeedByTankType = {
 	{Tank::User1,           0.1f},
 	{Tank::User2,           0.1f},
 	{Tank::EnemySimple,     0.1f},
@@ -179,8 +178,8 @@ void Tank::setMaxAmmoCurrent() {
 }
 
 void Tank::setTankSpeed() {
-	auto speedIt = speedByTankType.find(m_tankType);
-	assert(speedIt != speedByTankType.end());
+	auto speedIt = tankSpeedByTankType.find(m_tankType);
+	assert(speedIt != tankSpeedByTankType.end());
 	m_tankSpeed = speedIt->second;
 }
 

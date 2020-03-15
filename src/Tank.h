@@ -51,7 +51,7 @@ struct Tank : Figure {
 	// speed of every type
 	const static std::unordered_map<Tank::TankType, Ammo::AmmoType, std::hash<size_t>> ammoTypeByTankType;
 	const static std::unordered_map<Tank::TankType, uint32_t, std::hash<size_t>> colorByTankType;
-	const static std::unordered_map<Tank::TankType, float, std::hash<size_t>> speedByTankType;
+	const static std::unordered_map<Tank::TankType, float, std::hash<size_t>> tankSpeedByTankType;
 
 private:
 	
