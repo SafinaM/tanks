@@ -105,7 +105,7 @@ void Tank::setNextAmmoType() {
 			setAmmoType(Ammo::SuperFastNStrong);
 			break;
 		default:
-			std::cerr << "do not have such ammotype" << std::endl;
+			std::cerr << "do not have such ammo type" << std::endl;
 			exit(EXIT_FAILURE);
 	}
 }
@@ -165,7 +165,7 @@ const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::tankSpe
 	{Tank::EnemySimple,     0.1f},
 	{Tank::EnemyFast,       0.05f},
 	{Tank::EnemyStrong,     0.1f},
-	{Tank::EnemyStrongFast, 0.5f},
+	{Tank::EnemyStrongFast, 0.1f},
 	{Tank::Smart,           0.1f},
 };
 

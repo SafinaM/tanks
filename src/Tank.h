@@ -62,8 +62,8 @@ private:
 	Ammo::AmmoType m_ammoType = Ammo::SlowSingle;
 	int m_maxAmmoCurrent = 1;
 	bool m_isAlive = true;
-	float m_tankSpeed = 1;
-	float m_ammoSpeed = 1;
+	float m_tankSpeed = 1.f;
+	float m_ammoSpeed = 1.f;
 	
 	void setMaxAmmoCurrent();
 	void setTankSpeed();

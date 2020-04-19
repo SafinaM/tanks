@@ -35,19 +35,21 @@ int main() {
 	Tank oppTank(Tank::TankType::EnemySimple);
 	Brain brain;
 	
-	auto start = std::chrono::system_clock::now();
-	auto start2 = std::chrono::system_clock::now();
+	auto tankTimeStampStart = std::chrono::system_clock::now();
+	auto ammoTimeStampStart = std::chrono::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
 	
 	painter.drawHead(" T A N K S ");
 	int ch = getch();
 	painter.setScreenSize();
-	
 	painter.clearScreen();
 	int w = painter.getWinWidth();
 	int h = painter.getWinHeight();
-
+	
+	std::cout << w << std::endl;
+	std::cout << h << std::endl;
+	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
 	tank.setXY(10, 15);
@@ -58,9 +60,13 @@ int main() {
 		
 		while (true) {
 			bool wasStopped = false;
-			int w = painter.getWinWidth();
-			int h = painter.getWinHeight();
 			painter.setScreenSize();
+			w = painter.getWinWidth();
+			h = painter.getWinHeight();
+			
+			std::cout << w << std::endl;
+			std::cout << h << std::endl;
+			
 			if (ch == 'p') {
 				painter.clearScreen();
 				painter.drawHead("Pause! Press any key!");
@@ -116,23 +122,22 @@ int main() {
 //			} else
 
 			
-			auto end = std::chrono::system_clock::now();
-			auto end2 = std::chrono::system_clock::now();
-			std::chrono::duration<double> diff = end-start;
-			
-			std::chrono::duration<double> diff2 = end2-start2;
+			auto tankTimeStampEnd = std::chrono::system_clock::now();
+			auto ammoTimeStampEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> tankDiff = tankTimeStampEnd - tankTimeStampStart;
+			std::chrono::duration<double> ammoDiff = ammoTimeStampEnd - ammoTimeStampStart;
 			
 			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
-			if (diff2.count() > tank.getAmmoSpeed()) {
+			if (ammoDiff.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();
-				start2 = std::chrono::system_clock::now();
-				diff2.zero();
+				ammoTimeStampStart = std::chrono::system_clock::now();
+				ammoDiff.zero();
 			}
 			
-			if (diff.count() > oppTank.getTankSpeed()) {
-				start = std::chrono::system_clock::now();
-				diff.zero();
+			if (tankDiff.count() > oppTank.getTankSpeed()) {
+				tankTimeStampStart = std::chrono::system_clock::now();
+				tankDiff.zero();
 				Direction direction = brain.chooseDirection();
 				if (direction == Direction::Down || direction == Direction::Right) {
 					painter.eraseTank(oppTank);
