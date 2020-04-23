@@ -22,7 +22,7 @@ struct Map : BoardBase {
 	
 	~Map() = default;
 	
-
+	
 	
 	void setXY(uint32_t x, uint32_t y) noexcept;
 	

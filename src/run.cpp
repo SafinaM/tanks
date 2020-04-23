@@ -31,12 +31,15 @@ void shoot(Tank& tank) {
 }
 
 int main() {
+	
+	using clock = std::chrono::high_resolution_clock;
+	
 	Tank tank(Tank::TankType::User1);
 	Tank oppTank(Tank::TankType::EnemySimple);
 	Brain brain;
 	
-	auto tankTimeStampStart = std::chrono::system_clock::now();
-	auto ammoTimeStampStart = std::chrono::system_clock::now();
+	auto tankTimeStampStart = clock::system_clock::now();
+	auto ammoTimeStampStart = clock::system_clock::now();
 	PainterTanks painter;
 	painter.hideCursor();
 	
@@ -121,9 +124,8 @@ int main() {
 //				direction = brain.chooseDirection();
 //			} else
 
-			
-			auto tankTimeStampEnd = std::chrono::system_clock::now();
-			auto ammoTimeStampEnd = std::chrono::system_clock::now();
+			auto tankTimeStampEnd = clock::system_clock::now();
+			auto ammoTimeStampEnd = clock::system_clock::now();
 			std::chrono::duration<double> tankDiff = tankTimeStampEnd - tankTimeStampStart;
 			std::chrono::duration<double> ammoDiff = ammoTimeStampEnd - ammoTimeStampStart;
 			
@@ -131,12 +133,12 @@ int main() {
 			if (ammoDiff.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();
-				ammoTimeStampStart = std::chrono::system_clock::now();
+				ammoTimeStampStart = clock::system_clock::now();
 				ammoDiff.zero();
 			}
 			
 			if (tankDiff.count() > oppTank.getTankSpeed()) {
-				tankTimeStampStart = std::chrono::system_clock::now();
+				tankTimeStampStart = clock::system_clock::now();
 				tankDiff.zero();
 				Direction direction = brain.chooseDirection();
 				if (direction == Direction::Down || direction == Direction::Right) {
