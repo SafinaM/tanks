@@ -16,7 +16,7 @@ endif()
 add_subdirectory("${CMAKE_SOURCE_DIR}/../core" "${CMAKE_BINARY_DIR}/core")
 
 add_executable(run run.cpp Tank.cpp PainterTanks.cpp helpers.cpp Brain.cpp Ammo.cpp Map.cpp ${SOURCES})
-add_executable(test test.cpp Map.cpp ${SOURCES})
+add_executable(test test.cpp Map.cpp Tank.cpp Ammo.cpp ${SOURCES})
 
 target_include_directories(run PUBLIC "${CMAKE_SOURCE_DIR}/../core")
 target_link_libraries(run Core ${CMAKE_THREAD_LIBS_INIT})
