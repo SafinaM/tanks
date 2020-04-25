@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Figure.h>
+#include <enums.h>
 
 #include <unordered_map>
 

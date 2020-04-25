@@ -27,8 +27,6 @@ struct Map : BoardBase {
 	uint32_t getXOrigin() const noexcept;
 	uint32_t getYOrigin() const noexcept;
 	
-	bool areCrossedFigures(Figure *figure1, Figure *figure2);
-	
 private:
 	uint32_t m_xOrigin = 0;
 	uint32_t m_yOrigin = 0;

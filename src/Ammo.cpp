@@ -17,6 +17,7 @@ void Ammo::debugPrint() const {
 Ammo::Ammo(AmmoType type) : ammoType(type), Figure(m_orientation) {
 	points = getPoints(m_orientation);
 	m_Color = ammoType;
+	figureType = FigureType::FT_TYPE2; // Ammo
 }
 
 std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const {

@@ -16,6 +16,8 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 	
 	points = getPoints(m_orientation);
 	
+	figureType = FigureType::FT_TYPE1;
+	
 	auto colorIt = colorByTankType.find(m_tankType);
 	assert(colorIt != colorByTankType.end());
 	m_Color = colorIt->second;
