@@ -31,14 +31,14 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 	// for user tanks we take max == 4, for opposite tanks we always take 1
 	const uint32_t size = m_tankType == (User1 || m_tankType == User2) ? Ammo::maxNumberOfAmmo : 1;
 	
-	m_ammo.resize(size);
+	ammo.resize(size);
 	for (uint32_t i = 0; i < size; ++i) {
 		Ammo am(m_ammoType);
-		m_ammo.emplace_back(std::move(am));
+		ammo.emplace_back(std::move(am));
 	}
-	assert(!m_ammo.empty());
+	assert(!ammo.empty());
 	
-	m_ammoSpeed = m_ammo[0].getSpeed();
+	m_ammoSpeed = ammo[0].getSpeed();
 	setTankSpeed();
 }
 
@@ -68,16 +68,16 @@ void Tank::move(const Direction direction) noexcept {
 void Tank::shoot() {
 	setMaxAmmoCurrent();
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
-		if (m_ammo[i].isActive()) {
+		if (ammo[i].isActive()) {
 			continue;
 		}
-		m_ammo[i].setAmmoType(m_ammoType);
-		m_ammo[i].setOrientationTypeAndDirection(m_orientation);
-		m_ammo[i].setPoints(m_orientation);
-		m_ammo[i].setXY(getXOffset(), getYOffset());
-//		m_ammo[i].setColor(getColor());
-		m_ammo[i].setActiveFlag(true);
-		m_ammoSpeed = m_ammo[i].getSpeed();
+		ammo[i].setAmmoType(m_ammoType);
+		ammo[i].setOrientationTypeAndDirection(m_orientation);
+		ammo[i].setPoints(m_orientation);
+		ammo[i].setXY(getXOffset(), getYOffset());
+//		ammo[i].setColor(getColor());
+		ammo[i].setActiveFlag(true);
+		m_ammoSpeed = ammo[i].getSpeed();
 		break;
 	}
 }
@@ -85,9 +85,9 @@ void Tank::shoot() {
 void Tank::moveAmmo() {
 	setMaxAmmoCurrent();
 	for (uint32_t i = 0; i < m_maxAmmoCurrent; ++i) {
-		if (m_ammo[i].isActive()) {
-			const auto direction = m_ammo[i].getDirection();
-			m_ammo[i].move(direction);
+		if (ammo[i].isActive()) {
+			const auto direction = ammo[i].getDirection();
+			ammo[i].move(direction);
 		}
 	}
 }
@@ -117,7 +117,7 @@ void Tank::setAmmoType(Ammo::AmmoType ammoType) {
 }
 
 std::vector<Ammo> Tank::getAmmo() const noexcept {
-	return m_ammo;
+	return ammo;
 }
 
 std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const {
@@ -167,7 +167,7 @@ const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::tankSpe
 	{Tank::EnemySimple,     0.1f},
 	{Tank::EnemyFast,       0.05f},
 	{Tank::EnemyStrong,     0.1f},
-	{Tank::EnemyStrongFast, 0.1f},
+	{Tank::EnemyStrongFast, 0.05f},
 	{Tank::Smart,           0.1f},
 };
 
@@ -192,3 +192,42 @@ float Tank::getAmmoSpeed() const noexcept {
 float Tank::getTankSpeed() const noexcept {
 	return m_tankSpeed;
 }
+
+void Tank::verifyIntersection(Tank& tank) noexcept {
+	
+	// check ammo intersection
+	for (auto& ammoItem1: tank.ammo) {
+		for (auto& ammoItem2: ammo) {
+			if (ammoItem1.isActive() && ammoItem2.isActive() && areCrossedFigures(ammoItem1, ammoItem2)) {
+				ammoItem1.setActiveFlag(false);
+				ammoItem2.setActiveFlag(false);
+			}
+		}
+	}
+	
+	// check intersection of ammo and this tank
+	for (auto& ammoItem: tank.ammo) {
+		if (ammoItem.isActive() && areCrossedFigures(ammoItem, *this)) {
+			ammoItem.setActiveFlag(false);
+			this->isAlive = false;
+		}
+	}
+	
+	// check intersection of ammo and other tank
+	for (auto& ammoItem: ammo) {
+		if (ammoItem.isActive() && areCrossedFigures(ammoItem, tank)) {
+			ammoItem.setActiveFlag(false);
+			tank.isAlive = false;
+		}
+	}
+}
+
+void Tank::verifyIntersections(std::vector<Tank>& tanks) noexcept {
+	for (auto& tank: tanks) {
+		if (!tank.isAlive)
+			continue;
+		verifyIntersection(tank);
+	}
+}
+
+

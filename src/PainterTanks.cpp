@@ -7,8 +7,8 @@ void PainterTanks::drawTank(const Tank& tank) const noexcept {
 	drawFigure(tank, 0);
 }
 
-void PainterTanks::eraseTank(const Tank& figure) const noexcept {
-	eraseFigure(figure);
+void PainterTanks::eraseTank(const Tank& tank) const noexcept {
+	eraseFigure(tank);
 }
 
 void PainterTanks::drawAmmo(const Tank &tank, int color) const noexcept {

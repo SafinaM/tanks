@@ -35,7 +35,13 @@ int main() {
 	using clock = std::chrono::high_resolution_clock;
 	
 	Tank tank(Tank::TankType::User1);
-	Tank oppTank(Tank::TankType::EnemySimple);
+	constexpr uint32_t numberOfOpponents = 10;
+	std::vector<Tank> opponents;
+	opponents.reserve(numberOfOpponents);
+	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+		Tank oppTank(Tank::TankType::EnemySimple);
+		opponents.emplace_back(std::move(oppTank));
+	}
 	Brain brain;
 	
 	auto tankTimeStampStart = clock::system_clock::now();
@@ -50,13 +56,17 @@ int main() {
 	int w = painter.getWinWidth();
 	int h = painter.getWinHeight();
 	
-	std::cout << w << std::endl;
-	std::cout << h << std::endl;
+//	std::cout << w << std::endl;
+//	std::cout << h << std::endl;
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
 	tank.setXY(10, 15);
-	oppTank.setXY(5, 10);
+	
+	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+		opponents[i].setXY(5 + i, 10 + i);
+	}
+	
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -67,8 +77,8 @@ int main() {
 			w = painter.getWinWidth();
 			h = painter.getWinHeight();
 			
-			std::cout << w << std::endl;
-			std::cout << h << std::endl;
+//			std::cout << w << std::endl;
+//			std::cout << h << std::endl;
 			
 			if (ch == 'p') {
 				painter.clearScreen();
@@ -79,13 +89,16 @@ int main() {
 			if (!painter.isSizeOk()) {
 				painter.clearScreen();
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
-				std::cout << "screen width = " << w << std::endl;
-				std::cout << "screen height = " << h << std::endl;
+//				std::cout << "screen width = " << w << std::endl;
+//				std::cout << "screen height = " << h << std::endl;
 				getch();
 				painter.clearScreen();
 			}
 			painter.drawTank(tank);
-			painter.drawTank(oppTank);
+			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+				if (opponents[i].isAlive)
+					painter.drawTank(opponents[i]);
+			}
 			
 			if (kbhit()) {
 				painter.eraseTank(tank);
@@ -116,17 +129,19 @@ int main() {
 			}
 			
 			
-			if (ch == 'q')
+			if (ch == 'q') {
 				break;
+			}
 			
-//			Action action = brain.chooseAction(oppTank);
-//			if (action == Action::ChooseDirection) {
-//				direction = brain.chooseDirection();
-//			} else
+			tank.verifyIntersections(opponents);
+
 
 			auto tankTimeStampEnd = clock::system_clock::now();
 			auto ammoTimeStampEnd = clock::system_clock::now();
-			std::chrono::duration<double> tankDiff = tankTimeStampEnd - tankTimeStampStart;
+			std::vector<std::chrono::duration<double>> tankDiffs;
+			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+				tankDiffs.emplace_back(tankTimeStampEnd - tankTimeStampStart);
+			}
 			std::chrono::duration<double> ammoDiff = ammoTimeStampEnd - ammoTimeStampStart;
 			
 			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
@@ -137,17 +152,25 @@ int main() {
 				ammoDiff.zero();
 			}
 			
-			if (tankDiff.count() > oppTank.getTankSpeed()) {
-				tankTimeStampStart = clock::system_clock::now();
-				tankDiff.zero();
-				Direction direction = brain.chooseDirection();
-				if (direction == Direction::Down || direction == Direction::Right) {
-					painter.eraseTank(oppTank);
-					oppTank.move(direction);
+			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+				if (!opponents[i].isAlive) {
+					if (!opponents[i].isErased) {
+						opponents[i].isErased = true;
+						painter.eraseTank(opponents[i]);
+					}
+					continue;
 				}
-				break;
-				
+				if (tankDiffs[i].count() > opponents[i].getTankSpeed()) {
+					tankTimeStampStart = clock::system_clock::now();
+					tankDiffs[i].zero();
+					Direction direction = brain.chooseDirection();
+					if (direction == Direction::Down || direction == Direction::Right) {
+						painter.eraseTank(opponents[i]);
+						opponents[i].move(direction);
+					}
+				}
 			}
+			break;
 //			painter.drawTank(tank);
 		} // one figure movement
 		
