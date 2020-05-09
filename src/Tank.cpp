@@ -12,11 +12,9 @@ void Tank::print() {
 	}
 }
 
-Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
+Tank::Tank(TankType type) : m_tankType(type), BaseAmmoTankFigure(Orientation::First_0) {
 	
 	points = getPoints(m_orientation);
-	
-	figureType = FigureType::FT_TYPE1;
 	
 	auto colorIt = colorByTankType.find(m_tankType);
 	assert(colorIt != colorByTankType.end());
@@ -42,7 +40,12 @@ Tank::Tank(TankType type) : m_tankType(type), Figure(Orientation::First_0) {
 	setTankSpeed();
 }
 
+void Tank::move() noexcept {
+	move(m_direction);
+}
+
 void Tank::move(const Direction direction) noexcept {
+	
 	switch (direction) {
 		case Direction::Up:
 			m_orientation = Orientation::First_0;
@@ -198,7 +201,8 @@ void Tank::verifyIntersection(Tank& tank) noexcept {
 	// check ammo intersection
 	for (auto& ammoItem1: tank.ammo) {
 		for (auto& ammoItem2: ammo) {
-			if (ammoItem1.isActive() && ammoItem2.isActive() && areCrossedFigures(ammoItem1, ammoItem2)) {
+			if (ammoItem1.isActive() && ammoItem2.isActive() &&
+			areCrossedFigures(ammoItem1, ammoItem2)) {
 				ammoItem1.setActiveFlag(false);
 				ammoItem2.setActiveFlag(false);
 			}

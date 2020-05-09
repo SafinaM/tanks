@@ -21,21 +21,12 @@ void echo() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
 }
 
-void shoot(Tank& tank) {
-	if (kbhit()) {
-		char ch = rlutil::getkey();
-		if (ch == rlutil::KEY_SPACE) {
-			tank.shoot();
-		}
-	}
-}
-
 int main() {
 	
 	using clock = std::chrono::high_resolution_clock;
 	
 	Tank tank(Tank::TankType::User1);
-	constexpr uint32_t numberOfOpponents = 10;
+	constexpr uint32_t numberOfOpponents = 3;
 	std::vector<Tank> opponents;
 	opponents.reserve(numberOfOpponents);
 	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
@@ -134,8 +125,7 @@ int main() {
 			}
 			
 			tank.verifyIntersections(opponents);
-
-
+			
 			auto tankTimeStampEnd = clock::system_clock::now();
 			auto ammoTimeStampEnd = clock::system_clock::now();
 			std::vector<std::chrono::duration<double>> tankDiffs;
@@ -145,6 +135,8 @@ int main() {
 			std::chrono::duration<double> ammoDiff = ammoTimeStampEnd - ammoTimeStampStart;
 			
 			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
+			std::cout << "here" << std::endl;
+			
 			if (ammoDiff.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();
@@ -152,6 +144,7 @@ int main() {
 				ammoDiff.zero();
 			}
 			
+			brain.chooseActions(opponents);
 			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
 				if (!opponents[i].isAlive) {
 					if (!opponents[i].isErased) {
@@ -163,11 +156,8 @@ int main() {
 				if (tankDiffs[i].count() > opponents[i].getTankSpeed()) {
 					tankTimeStampStart = clock::system_clock::now();
 					tankDiffs[i].zero();
-					Direction direction = brain.chooseDirection();
-					if (direction == Direction::Down || direction == Direction::Right) {
 						painter.eraseTank(opponents[i]);
-						opponents[i].move(direction);
-					}
+						opponents[i].move();
 				}
 			}
 			break;

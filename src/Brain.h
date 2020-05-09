@@ -5,7 +5,8 @@
 struct Brain {
 	Action chooseAction(Tank& tank);
 	
-	std::vector<Action> chooseActions(std::vector<Tank>& tanks);
+	void chooseActions(std::vector<Tank>& tanks);
 	
 	Direction chooseDirection();
+	
 };

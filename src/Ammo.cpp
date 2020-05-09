@@ -14,10 +14,9 @@ void Ammo::debugPrint() const {
 	}
 }
 
-Ammo::Ammo(AmmoType type) : ammoType(type), Figure(m_orientation) {
+Ammo::Ammo(AmmoType type) : ammoType(type), BaseAmmoTankFigure(m_orientation) {
 	points = getPoints(m_orientation);
 	m_Color = ammoType;
-	figureType = FigureType::FT_TYPE2; // Ammo
 }
 
 std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const {
@@ -39,9 +38,9 @@ std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const
 	}
 }
 
-void Ammo::setPoints(Orientation orientation) noexcept {
-	points = getPoints(orientation);
-}
+//void Ammo::setPoints(Orientation orientation) noexcept {
+//	points = getPoints(orientation);
+//}
 
 void Ammo::setAmmoType(const AmmoType type) {
 	ammoType = type;

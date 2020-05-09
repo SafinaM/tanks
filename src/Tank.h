@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <string>
 
-struct Tank : Figure {
+struct Tank : BaseAmmoTankFigure {
 	
 	enum TankType: uint32_t {
 		User1           = 0,
@@ -40,6 +40,8 @@ struct Tank : Figure {
 	
 	void move(const Direction direction) noexcept;
 	
+	void move() noexcept;
+	
 	void print();
 	
 	std::vector<Ammo> getAmmo() const noexcept;
@@ -70,8 +72,8 @@ private:
 	int m_maxAmmoCurrent = 1;
 	float m_tankSpeed = 1.f;
 	float m_ammoSpeed = 1.f;
+	Direction m_direction;
 	
 	void setMaxAmmoCurrent();
 	void setTankSpeed();
-	
 };

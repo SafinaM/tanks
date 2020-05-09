@@ -4,9 +4,10 @@
 #include <enums.h>
 
 #include <unordered_map>
+#include "BaseAmmoTankFigure.h"
 
 // explosive artillery projectile or bomb.
-struct Ammo : Figure {
+struct Ammo : BaseAmmoTankFigure {
 	
 	enum AmmoType : uint32_t {
 		SlowSingle        = 0,
@@ -22,7 +23,7 @@ struct Ammo : Figure {
 	
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
 	
-	void setPoints(Orientation orientation) noexcept;
+//	void setPoints(Orientation orientation) noexcept;
 	
 	void setAmmoType(const AmmoType type);
 	
