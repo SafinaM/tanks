@@ -8,7 +8,6 @@ struct BaseAmmoTankFigure : Figure {
 	
 	BaseAmmoTankFigure(Orientation orientation) : Figure(orientation) {};
 	
-	void setOrientationTypeAndDirection(Orientation orientation);
 	void setDirectionAndOrientation(Direction direction);
 	void setPoints(Orientation orientation) noexcept;
 	

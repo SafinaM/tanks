@@ -14,17 +14,53 @@ int main() {
 	painter.clearScreen();
 	const uint32_t x = 10;
 	const uint32_t y = 10;
-	const uint32_t width = 10;
-	const uint32_t height = 10;
+	const uint32_t width = 5;
+	const uint32_t height = 5;
 	
 	painter.setXY(xOrigin, yOrigin);
 	painter.drawRectangle(
-		x,
+		x + 20,
+		y + 20,
+		width,
+		height,
+		'~',
+		BackgroundColor::BC_BLUE,
+		TextColor::TC_LIGHT_BLUE);
+	
+	painter.drawRectangle(
+		x + 30,
 		y,
 		width,
 		height,
-		'!',
-		BackgroundColor::BC_BLUE,
+		'|',
+		BackgroundColor::BC_GREEN,
+		TextColor::TC_GREEN_BOLD);
+	
+	painter.drawRectangle(
+		x + 40,
+		y + 20,
+		width,
+		height,
+		'-',
+		BackgroundColor::BC_GRAY,
+		TextColor::TC_BLACK_BOLD);
+	
+	painter.drawRectangle(
+		x + 50,
+		y + 20,
+		width,
+		height,
+		'#',
+		BackgroundColor::BC_GRAY,
+		TextColor::TC_BLACK_BOLD);
+	
+	painter.drawRectangle(
+		x + 60,
+		y + 20,
+		width,
+		height,
+		'^',
+		BackgroundColor::BC_GREEN,
 		TextColor::TC_GREEN_BOLD);
 
 	for (uint32_t i = 0; i < map.getHeight(); ++i) {

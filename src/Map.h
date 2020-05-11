@@ -65,5 +65,11 @@ private:
 
 };
 
-constexpr static uint32_t textColor = 15;
-
+struct Tile {
+	BackgroundColor backgroundColor;
+	TextColor textColor;
+	char textSymb;
+	bool tankPatency;
+	uint32_t ammoPenetration;
+	
+};
