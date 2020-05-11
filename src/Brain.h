@@ -7,6 +7,8 @@ struct Brain {
 	
 	void chooseActions(std::vector<Tank>& tanks);
 	
+	bool checkShoot();
+	
 	Direction chooseDirection();
 	
 };

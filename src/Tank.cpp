@@ -63,6 +63,7 @@ void Tank::move(const Direction direction) noexcept {
 			m_orientation = Orientation::Second_90;
 			++m_offsetX;
 		default:
+//			std::cerr << "Error direction is not set!" << std::endl;
 			break;
 	}
 	points = getPoints(m_orientation);
@@ -200,7 +201,7 @@ void Tank::verifyIntersection(Tank& tank) noexcept {
 	
 	// check ammo intersection
 	for (auto& ammoItem1: tank.ammo) {
-		for (auto& ammoItem2: ammo) {
+		for (auto& ammoItem2: this->ammo) {
 			if (ammoItem1.isActive() && ammoItem2.isActive() &&
 			areCrossedFigures(ammoItem1, ammoItem2)) {
 				ammoItem1.setActiveFlag(false);
@@ -214,6 +215,7 @@ void Tank::verifyIntersection(Tank& tank) noexcept {
 		if (ammoItem.isActive() && areCrossedFigures(ammoItem, *this)) {
 			ammoItem.setActiveFlag(false);
 			this->isAlive = false;
+			std::cout << "User tank is killed!" << std::endl;
 		}
 	}
 	

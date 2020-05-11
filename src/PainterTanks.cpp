@@ -25,11 +25,8 @@ void PainterTanks::drawAmmo(const Tank &tank, int color) const noexcept {
 void PainterTanks::eraseAmmo(const Tank& tank) const noexcept {
 	const auto& ammo = tank.getAmmo();
 	const size_t size = ammo.size();
-	
 	for (auto i = 0; i < size; ++i) {
-		if (ammo[i].isActive()) {
-			eraseFigure(ammo[i]);
-		}
+		eraseFigure(ammo[i]);
 	}
 }
 

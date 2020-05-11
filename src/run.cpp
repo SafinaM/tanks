@@ -33,10 +33,17 @@ int main() {
 		Tank oppTank(Tank::TankType::EnemySimple);
 		opponents.emplace_back(std::move(oppTank));
 	}
+	
 	Brain brain;
 	
 	auto tankTimeStampStart = clock::system_clock::now();
 	auto ammoTimeStampStart = clock::system_clock::now();
+	std::vector<clock::time_point> ammoTimeStampStarts;
+	ammoTimeStampStarts.reserve(numberOfOpponents);
+	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+		ammoTimeStampStarts.push_back(clock::system_clock::now());
+	}
+	
 	PainterTanks painter;
 	painter.hideCursor();
 	
@@ -52,10 +59,12 @@ int main() {
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
-	tank.setXY(10, 15);
+	auto testOriginX = 70;
+	auto testOriginY = 20;
+	tank.setXY(50, testOriginY);
 	
 	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
-		opponents[i].setXY(5 + i, 10 + i);
+		opponents[i].setXY(testOriginX + i, testOriginY + i);
 	}
 	
 	while(true) {
@@ -129,23 +138,32 @@ int main() {
 			auto tankTimeStampEnd = clock::system_clock::now();
 			auto ammoTimeStampEnd = clock::system_clock::now();
 			std::vector<std::chrono::duration<double>> tankDiffs;
+			std::vector<std::chrono::duration<double>> ammoDiffs;
+			
 			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
-				tankDiffs.emplace_back(tankTimeStampEnd - tankTimeStampStart);
+				tankDiffs.push_back(tankTimeStampEnd - tankTimeStampStart);
+				ammoDiffs.push_back(ammoTimeStampEnd - ammoTimeStampStarts[i]);
 			}
-			std::chrono::duration<double> ammoDiff = ammoTimeStampEnd - ammoTimeStampStart;
+			std::chrono::duration<double> ammoUserTankDiff = ammoTimeStampEnd - ammoTimeStampStart;
 			
 			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
-			std::cout << "here" << std::endl;
-			
-			if (ammoDiff.count() > tank.getAmmoSpeed()) {
+			if (ammoUserTankDiff.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
 				tank.moveAmmo();
 				ammoTimeStampStart = clock::system_clock::now();
-				ammoDiff.zero();
+				ammoUserTankDiff.zero();
 			}
 			
-			brain.chooseActions(opponents);
+//			brain.chooseActions(opponents);
 			for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+				// we draw ammo even if tank is not alive
+				painter.drawAmmo(opponents[i], BackgroundColor::BC_YELLOW);
+				if (ammoDiffs[i].count() > opponents[i].getAmmoSpeed()) {
+					painter.eraseAmmo(opponents[i]);
+					opponents[i].moveAmmo();
+					ammoTimeStampStarts[i] = clock::system_clock::now();
+					ammoDiffs[i].zero();
+				}
 				if (!opponents[i].isAlive) {
 					if (!opponents[i].isErased) {
 						opponents[i].isErased = true;
@@ -156,8 +174,14 @@ int main() {
 				if (tankDiffs[i].count() > opponents[i].getTankSpeed()) {
 					tankTimeStampStart = clock::system_clock::now();
 					tankDiffs[i].zero();
-						painter.eraseTank(opponents[i]);
-						opponents[i].move();
+					painter.eraseTank(opponents[i]);
+					
+					auto direction = brain.chooseDirection();
+					if (direction == Direction::Left)
+						opponents[i].move(direction);
+					if (brain.checkShoot()) {
+						opponents[i].shoot();
+					}
 				}
 			}
 			break;
