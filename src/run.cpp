@@ -2,6 +2,8 @@
 #include "Tank.h"
 #include "PainterTanks.h"
 #include "Brain.h"
+#include "Map.h"
+#include "Stages.h"
 
 #include <thread>
 #include <future>
@@ -35,7 +37,8 @@ int main() {
 	}
 	
 	Brain brain;
-	
+	Map map(stageTest);
+	map.setXY(0, 0);
 	auto tankTimeStampStart = clock::system_clock::now();
 	auto ammoTimeStampStart = clock::system_clock::now();
 	std::vector<clock::time_point> ammoTimeStampStarts;
@@ -70,7 +73,6 @@ int main() {
 	while(true) {
 		if (ch == 'q')
 			break;
-		
 		while (true) {
 			bool wasStopped = false;
 			painter.setScreenSize();
@@ -177,7 +179,7 @@ int main() {
 					painter.eraseTank(opponents[i]);
 					
 					auto direction = brain.chooseDirection();
-					if (direction == Direction::Left)
+					if (direction == Direction::Left && map.allowMove(direction, opponents[i]))
 						opponents[i].move(direction);
 					if (brain.checkShoot()) {
 						opponents[i].shoot();

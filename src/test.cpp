@@ -5,7 +5,7 @@
 
 int main() {
 	
-	Map map(40, 20, stageTest);
+	Map map(stageTest);
 	map.debugPrint();
 	
 	const uint32_t xOrigin = 40;

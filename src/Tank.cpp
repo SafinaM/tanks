@@ -45,7 +45,7 @@ void Tank::move() noexcept {
 }
 
 void Tank::move(const Direction direction) noexcept {
-	
+	m_direction = direction;
 	switch (direction) {
 		case Direction::Up:
 			m_orientation = Orientation::First_0;

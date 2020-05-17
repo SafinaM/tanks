@@ -16,3 +16,7 @@ uint32_t Map::getXOrigin() const noexcept {
 uint32_t Map::getYOrigin() const noexcept {
 	return m_yOrigin;
 }
+
+bool Map::allowMove(Direction direction, const Figure &figure) const {
+	std::cout << "Override function: It is not realized yet!!!" << std::endl;
+}
