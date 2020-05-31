@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Tank.h"
+#include "TankEnums.h"
 
 struct Brain {
 	Action chooseAction(Tank& tank);

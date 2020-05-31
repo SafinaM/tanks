@@ -1,17 +1,17 @@
-#include "PainterTanks.h"
+#include "PainterLocal.h"
 #include "Tank.h"
 #include <cassert>
 
 
-void PainterTanks::drawTank(const Tank& tank) const noexcept {
+void PainterLocal::drawTank(const Tank& tank) const noexcept {
 	drawFigure(tank, 0);
 }
 
-void PainterTanks::eraseTank(const Tank& tank) const noexcept {
+void PainterLocal::eraseTank(const Tank& tank) const noexcept {
 	eraseFigure(tank);
 }
 
-void PainterTanks::drawAmmo(const Tank &tank, int color) const noexcept {
+void PainterLocal::drawAmmo(const Tank &tank, int color) const noexcept {
 	const auto& ammo = tank.getAmmo();
 	const size_t size = ammo.size();
 	
@@ -22,7 +22,7 @@ void PainterTanks::drawAmmo(const Tank &tank, int color) const noexcept {
 	}
 }
 
-void PainterTanks::eraseAmmo(const Tank& tank) const noexcept {
+void PainterLocal::eraseAmmo(const Tank& tank) const noexcept {
 	const auto& ammo = tank.getAmmo();
 	const size_t size = ammo.size();
 	for (auto i = 0; i < size; ++i) {
@@ -30,7 +30,7 @@ void PainterTanks::eraseAmmo(const Tank& tank) const noexcept {
 	}
 }
 
-void PainterTanks::drawFigure(const Figure &figure, int color) const noexcept {
+void PainterLocal::drawFigure(const Figure &figure, int color) const noexcept {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
@@ -74,7 +74,7 @@ void PainterTanks::drawFigure(const Figure &figure, int color) const noexcept {
 	}
 }
 
-void PainterTanks::eraseFigure(const Figure &figure) const noexcept {
+void PainterLocal::eraseFigure(const Figure &figure) const noexcept {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
@@ -92,6 +92,24 @@ void PainterTanks::eraseFigure(const Figure &figure) const noexcept {
 				Tank::TankSymbol::Empty,
 				color,
 				textColor);
+		}
+		std::cout << std::endl;
+	}
+}
+
+void PainterLocal::drawMap(const Map &map) {
+	const auto& buffer = map.buffer;
+	const uint32_t heightBoard = map.getHeight();
+	const uint32_t widhtBoard = map.getWidth();
+	for (uint8_t i = 0; i < heightBoard; ++i) {
+		for (uint8_t j = 0; j < widhtBoard; ++j) {
+			const auto& tile = map.getTileType(j + xOffsetBoard, i + yOffsetBoard);
+				drawPoint(
+					j + xOffsetBoard,
+					i + yOffsetBoard,
+					tile.textSymb,
+					tile.backgroundColor,
+					tile.textColor);
 		}
 		std::cout << std::endl;
 	}

@@ -15,7 +15,7 @@ endif()
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/../core" "${CMAKE_BINARY_DIR}/core")
 
-add_executable(run run.cpp Tank.cpp PainterTanks.cpp helpers.cpp Brain.cpp Ammo.cpp Map.cpp BaseAmmoTankFigure.cpp ${SOURCES} )
+add_executable(run run.cpp Tank.cpp PainterLocal.cpp helpers.cpp Brain.cpp Ammo.cpp Map.cpp BaseAmmoTankFigure.cpp ${SOURCES} TankEnums.h Tile.h)
 add_executable(test test.cpp Map.cpp Tank.cpp Ammo.cpp BaseAmmoTankFigure.cpp ${SOURCES})
 
 target_include_directories(run PUBLIC "${CMAKE_SOURCE_DIR}/../core")

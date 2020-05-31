@@ -1,6 +1,6 @@
 #include <Painter.h>
 #include "Tank.h"
-#include "PainterTanks.h"
+#include "PainterLocal.h"
 #include "Brain.h"
 #include "Map.h"
 #include "Stages.h"
@@ -47,7 +47,7 @@ int main() {
 		ammoTimeStampStarts.push_back(clock::system_clock::now());
 	}
 	
-	PainterTanks painter;
+	PainterLocal painter;
 	painter.hideCursor();
 	
 	painter.drawHead(" T A N K S ");
@@ -69,7 +69,6 @@ int main() {
 	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
 		opponents[i].setXY(testOriginX + i, testOriginY + i);
 	}
-	
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -81,7 +80,7 @@ int main() {
 			
 //			std::cout << w << std::endl;
 //			std::cout << h << std::endl;
-			
+			painter.drawMap(map);
 			if (ch == 'p') {
 				painter.clearScreen();
 				painter.drawHead("Pause! Press any key!");
@@ -129,7 +128,6 @@ int main() {
 						break;
 				}
 			}
-			
 			
 			if (ch == 'q') {
 				break;
