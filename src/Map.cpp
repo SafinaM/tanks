@@ -54,7 +54,7 @@ Map::isCrossedTankWithBuffer(
 		for (auto j = 0; j < points[0].size(); ++j) {
 			const auto& tile = getTileType(j + xOffset, i + yOffset);
 			// if buffer points and figure points are intersected and tank can pass
-			if (points[i][j] && buffer[i + yOffset][j + xOffset] && tile.tankPatency) {
+			if (points[i][j] && buffer[i + yOffset][j + xOffset] && !tile.tankPatency) {
 				return true;
 			}
 		}

@@ -38,7 +38,11 @@ int main() {
 	
 	Brain brain;
 	Map map(stageTest);
-	map.setXY(0, 0);
+	
+	const auto testOriginX = 10;
+	const auto testOriginY = 10;
+	const auto delta = 5;
+	
 	auto tankTimeStampStart = clock::system_clock::now();
 	auto ammoTimeStampStart = clock::system_clock::now();
 	std::vector<clock::time_point> ammoTimeStampStarts;
@@ -62,9 +66,12 @@ int main() {
 	
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
-	auto testOriginX = 70;
-	auto testOriginY = 20;
-	tank.setXY(50, testOriginY);
+	
+	tank.setXY(testOriginX + delta - 2, testOriginY + delta -1 );
+	painter.setXY(testOriginX, testOriginY);
+	
+	painter.clearScreen();
+	painter.drawMap(map);
 	
 	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
 		opponents[i].setXY(testOriginX + i, testOriginY + i);
@@ -80,7 +87,6 @@ int main() {
 			
 //			std::cout << w << std::endl;
 //			std::cout << h << std::endl;
-			painter.drawMap(map);
 			if (ch == 'p') {
 				painter.clearScreen();
 				painter.drawHead("Pause! Press any key!");
@@ -110,19 +116,23 @@ int main() {
 						break;
 					case 'w':
 					case rlutil::KEY_UP:
-						tank.move(Direction::Up);
+						if (map.allowMove(Direction::Up, tank))
+							tank.move(Direction::Up);
 						break;
 					case 's':
 					case rlutil::KEY_DOWN:
-						tank.move(Direction::Down);
+						if (map.allowMove(Direction::Down, tank))
+							tank.move(Direction::Down);
 						break;
 					case 'a':
 					case rlutil::KEY_LEFT:
-						tank.move(Direction::Left);
+						if (map.allowMove(Direction::Left, tank))
+							tank.move(Direction::Left);
 						break;
 					case 'd':
 					case rlutil::KEY_RIGHT:
-						tank.move(Direction::Right);
+						if (map.allowMove(Direction::Right, tank))
+							tank.move(Direction::Right);
 						break;
 					default:
 						break;
@@ -180,7 +190,7 @@ int main() {
 					if (direction == Direction::Left && map.allowMove(direction, opponents[i]))
 						opponents[i].move(direction);
 					if (brain.checkShoot()) {
-						opponents[i].shoot();
+//						opponents[i].shoot();
 					}
 				}
 			}

@@ -103,7 +103,7 @@ void PainterLocal::drawMap(const Map &map) {
 	const uint32_t widhtBoard = map.getWidth();
 	for (uint8_t i = 0; i < heightBoard; ++i) {
 		for (uint8_t j = 0; j < widhtBoard; ++j) {
-			const auto& tile = map.getTileType(j + xOffsetBoard, i + yOffsetBoard);
+			const auto& tile = map.getTileType(j, i);
 				drawPoint(
 					j + xOffsetBoard,
 					i + yOffsetBoard,
