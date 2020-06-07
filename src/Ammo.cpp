@@ -67,11 +67,11 @@ void Ammo::setActiveFlag(bool isActive) {
 }
 
 const std::unordered_map<Ammo::AmmoType, float, std::hash<size_t>> Ammo::speedByType = {
-	{Ammo::SlowSingle, 0.1f},
-	{Ammo::FastSingle, 0.05f},
-	{Ammo::FastDouble, 0.05f},
-	{Ammo::FastDoubleStrong, 0.05f},
-	{Ammo::SuperFastNStrong, 0.05f}};
+	{Ammo::SlowSingle, 0.08f},
+	{Ammo::FastSingle, 0.04f},
+	{Ammo::FastDouble, 0.04f},
+	{Ammo::FastDoubleStrong, 0.04f},
+	{Ammo::SuperFastNStrong, 0.04f}};
 
 const std::unordered_map<Ammo::AmmoType, uint32_t, std::hash<size_t>> Ammo::numberByType = {
 	{Ammo::SlowSingle, 1},

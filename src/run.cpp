@@ -31,13 +31,19 @@ int main() {
 	constexpr uint32_t numberOfOpponents = 3;
 	std::vector<Tank> opponents;
 	opponents.reserve(numberOfOpponents);
-	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
-		Tank oppTank(Tank::TankType::EnemySimple);
-		opponents.emplace_back(std::move(oppTank));
-	}
+	std::vector<Direction> directions;
+	directions.reserve(numberOfOpponents);
 	
 	Brain brain;
 	Map map(stageTest);
+	
+	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
+		Tank oppTank(Tank::TankType::EnemySimple);
+		opponents.emplace_back(std::move(oppTank));
+		// initialize directions of tanks
+		directions[i] = brain.chooseDirection();
+	}
+	
 	
 	const auto testOriginX = 10;
 	const auto testOriginY = 10;
@@ -193,9 +199,13 @@ int main() {
 					tankDiffs[i].zero();
 					painter.eraseTank(opponents[i]);
 					
-					auto direction = brain.chooseDirection();
-					if (direction == Direction::Left && map.allowMove(direction, opponents[i]))
-						opponents[i].move(direction);
+					if (map.allowMove(directions[i], opponents[i]))
+						opponents[i].move(directions[i]);
+					else {
+						directions[i] = brain.chooseDirection();
+						continue;
+					}
+					
 					if (brain.checkShoot()) {
 						opponents[i].shoot();
 					}

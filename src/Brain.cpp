@@ -26,7 +26,7 @@ void Brain::chooseActions(std::vector<Tank>& tanks) {
 
 bool Brain::checkShoot() {
 	// probability is about 1/25
-	constexpr uint32_t upLimit = 26;
+	constexpr uint32_t upLimit = 52;
 	return  helper::generateNumber(0, upLimit) == upLimit / 2;
 }
 

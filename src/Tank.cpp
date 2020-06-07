@@ -170,13 +170,13 @@ const std::unordered_map<Tank::TankType, uint32_t, std::hash<size_t>> Tank::colo
 };
 
 const std::unordered_map<Tank::TankType, float, std::hash<size_t>> Tank::tankSpeedByTankType = {
-	{Tank::User1,           0.1f},
-	{Tank::User2,           0.1f},
-	{Tank::EnemySimple,     0.1f},
-	{Tank::EnemyFast,       0.05f},
-	{Tank::EnemyStrong,     0.1f},
-	{Tank::EnemyStrongFast, 0.05f},
-	{Tank::Smart,           0.1f},
+	{Tank::User1,           0.12f},
+	{Tank::User2,           0.12f},
+	{Tank::EnemySimple,     0.15f},
+	{Tank::EnemyFast,       0.06f},
+	{Tank::EnemyStrong,     0.15f},
+	{Tank::EnemyStrongFast, 0.06f},
+	{Tank::Smart,           0.15f},
 };
 
 uint32_t Tank::m_numberOfTanks = 0;
