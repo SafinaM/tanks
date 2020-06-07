@@ -11,7 +11,6 @@ struct BaseAmmoTankFigure : Figure {
 	void setDirectionAndOrientation(Direction direction);
 	void setPoints(Orientation orientation) noexcept;
 	
-	const static std::unordered_map<Orientation, Direction, std::hash<size_t>> directionByOrientation;
 	const static std::unordered_map<Direction, Orientation, std::hash<size_t>> orientationByDirection;
 };
 

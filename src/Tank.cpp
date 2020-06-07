@@ -44,26 +44,30 @@ void Tank::move() noexcept {
 	move(m_direction);
 }
 
+void Tank::rotate(const Direction direction) noexcept {
+	this->setDirectionAndOrientation(direction);
+	points = getPoints(m_orientation);
+}
+
+
 void Tank::move(const Direction direction) noexcept {
-	m_direction = direction;
+	
+	rotate(direction);
 	switch (direction) {
 		case Direction::Up:
-			m_orientation = Orientation::First_0;
 			--m_offsetY;
 			break;
 		case Direction::Down:
-			m_orientation = Orientation::Third_180;
 			++m_offsetY;
 			break;
 		case Direction::Left:
-			m_orientation = Orientation::Fourth_270;
 			--m_offsetX;
 			break;
 		case Direction::Right:
-			m_orientation = Orientation::Second_90;
 			++m_offsetX;
+			break;
 		default:
-//			std::cerr << "Error direction is not set!" << std::endl;
+			std::cerr << "Error direction is not set!" << std::endl;
 			break;
 	}
 	points = getPoints(m_orientation);

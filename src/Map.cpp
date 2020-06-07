@@ -17,7 +17,7 @@ uint32_t Map::getYOrigin() const noexcept {
 	return m_yOrigin;
 }
 
-bool Map::allowMove(Direction direction, const Figure &figure) const {
+bool Map::allowMove(Direction direction, Figure &figure) const {
 	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
@@ -54,11 +54,11 @@ Map::isCrossedTankWithBuffer(
 	int xOffset,
 	int yOffset) const {
 	
-	for (auto i = 0; i < points.size(); ++i) {
-		for (auto j = 0; j < points[0].size(); ++j) {
-			const auto& tile = getTileType(j + xOffset, i + yOffset);
+	for (auto y = 0; y < points.size(); ++y) {
+		for (auto x = 0; x < points[0].size(); ++x) {
+			const auto& tile = getTileType(x + xOffset, y + yOffset);
 			// if buffer points and figure points are intersected and tank can pass
-			if (points[i][j] && buffer[i + yOffset][j + xOffset] && !tile.tankPatency) {
+			if (points[y][x] && buffer[y + yOffset][x + xOffset] && !tile.tankPatency) {
 				return true;
 			}
 		}
@@ -77,17 +77,16 @@ Map::crossAmmoWithBuffer(
 			const auto& tile = getTileType(x + xOffset, y + yOffset);
 			// if buffer points and figure points are intersected and ammo can pass it
 			if (points[y][x] && buffer[y + yOffset][x + xOffset]) {
-				std::cout << "Intersection of ammo" << std::endl;
-				std::cout << "tile = " << static_cast<int>(tile.ammoPenetration) << std::endl;
-				if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_DESTROYABLE) {
-					buffer[y + yOffset][x + xOffset] = 0;
-					shell.setActiveFlag(false);
-				}
-				else if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_NOT_DESTROYABLE) {
-					shell.setActiveFlag(false);
-				}
-				else if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_FLY_THROUGH) {
-					continue;
+				switch (tile.ammoPenetration) {
+					case TileAmmoPenetrationType::TAP_DESTROYABLE:
+						buffer[y + yOffset][x + xOffset] = 0;
+						shell.setActiveFlag(false);
+						break;
+					case TileAmmoPenetrationType::TAP_NOT_DESTROYABLE:
+						shell.setActiveFlag(false);
+						break;
+					case TileAmmoPenetrationType::TAP_FLY_THROUGH:
+						continue;
 				}
 			}
 		}

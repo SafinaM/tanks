@@ -116,21 +116,25 @@ int main() {
 						break;
 					case 'w':
 					case rlutil::KEY_UP:
+						tank.rotate(Direction::Up);
 						if (map.allowMove(Direction::Up, tank))
 							tank.move(Direction::Up);
 						break;
 					case 's':
 					case rlutil::KEY_DOWN:
+						tank.rotate(Direction::Down);
 						if (map.allowMove(Direction::Down, tank))
 							tank.move(Direction::Down);
 						break;
 					case 'a':
 					case rlutil::KEY_LEFT:
+						tank.rotate(Direction::Left);
 						if (map.allowMove(Direction::Left, tank))
 							tank.move(Direction::Left);
 						break;
 					case 'd':
 					case rlutil::KEY_RIGHT:
+						tank.rotate(Direction::Right);
 						if (map.allowMove(Direction::Right, tank))
 							tank.move(Direction::Right);
 						break;

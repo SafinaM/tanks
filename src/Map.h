@@ -27,7 +27,7 @@ struct Map : BoardBase {
 	uint32_t getXOrigin() const noexcept;
 	uint32_t getYOrigin() const noexcept;
 	
-	bool allowMove(Direction direction, const Figure &figure) const;
+	bool allowMove(Direction direction, Figure &figure) const;
 	
 	void crossWithAmmo(Tank &tank);
 	

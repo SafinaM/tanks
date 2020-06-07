@@ -41,6 +41,8 @@ struct Tank : BaseAmmoTankFigure {
 	
 	void move(const Direction direction) noexcept;
 	
+	void rotate(const Direction direction) noexcept;
+	
 	void move() noexcept;
 	
 	void print();
