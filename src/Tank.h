@@ -26,8 +26,9 @@ struct Tank : BaseAmmoTankFigure {
 		Left = '/',
 		Right = '\\',
 	};
-//	using Figure::getPoints;
 	
+	using Figure::getPoints;
+
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
 	
 	void shoot();

@@ -30,18 +30,22 @@ bool Map::allowMove(Direction direction, const Figure &figure) const {
 	return !isCrossedTankWithBuffer(points, xOffset, yOffset);
 }
 
-bool Map::allowMoveAmmo(Direction direction, const std::unique_ptr<Figure> &figure) {
-	const auto& points = figure->getPoints();
-	int xOffset = figure->getXOffset();
-	int yOffset = figure->getYOffset();
-	
-	incrementOrigins(direction, xOffset, yOffset);
-	
-	bool wallIntersectionResult = isCrossedFigureWithWalls(points, xOffset, yOffset);
-	
-	crossAmmoWithBuffer(figure, xOffset, yOffset);
-	
-	return wallIntersectionResult;
+void Map::crossWithAmmo(Tank &tank) {
+	for (auto& shell: tank.ammo) {
+		if (!shell.isActive())
+			continue;
+		const auto& points = shell.getPoints();
+		int xOffset = shell.getXOffset();
+		int yOffset = shell.getYOffset();
+		const Direction direction = shell.getDirection();
+		incrementOrigins(direction, xOffset, yOffset);
+		
+		if (isCrossedFigureWithWalls(points, xOffset, yOffset)) {
+			shell.setActiveFlag(false);
+			continue;
+		}
+		crossAmmoWithBuffer(points, xOffset, yOffset, shell);
+	}
 }
 
 bool
@@ -64,35 +68,32 @@ Map::isCrossedTankWithBuffer(
 
 void
 Map::crossAmmoWithBuffer(
-	const std::unique_ptr<Figure> &figure,
+	const std::vector<std::vector<uint8_t>>& points,
 	int xOffset,
-	int yOffset) {
-	const auto& points = figure->getPoints();
-	for (auto i = 0; i < points.size(); ++i) {
-		for (auto j = 0; j < points[0].size(); ++j) {
-			const auto& tile = getTileType(j + xOffset, i + yOffset);
+	int yOffset,
+	Ammo& shell) {
+	for (auto y = 0; y < points.size(); ++y) {
+		for (auto x = 0; x < points[0].size(); ++x) {
+			const auto& tile = getTileType(x + xOffset, y + yOffset);
 			// if buffer points and figure points are intersected and ammo can pass it
-			assert(figure);
-			Ammo* ammoPtr = dynamic_cast<Ammo*>(figure.get());
-			assert(ammoPtr);
-			if (points[i][j] && buffer[i + yOffset][j + xOffset]) {
+			if (points[y][x] && buffer[y + yOffset][x + xOffset]) {
+				std::cout << "Intersection of ammo" << std::endl;
+				std::cout << "tile = " << static_cast<int>(tile.ammoPenetration) << std::endl;
 				if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_DESTROYABLE) {
-					buffer[i + yOffset][j + xOffset] = 0;
-					ammoPtr->setActiveFlag(false);
+					buffer[y + yOffset][x + xOffset] = 0;
+					shell.setActiveFlag(false);
 				}
 				else if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_NOT_DESTROYABLE) {
-					ammoPtr->setActiveFlag(false);
+					shell.setActiveFlag(false);
 				}
 				else if (tile.ammoPenetration == TileAmmoPenetrationType::TAP_FLY_THROUGH) {
 					continue;
 				}
-			} else
-				continue;
+			}
 		}
 	}
 }
 
 Tile Map::getTileType(uint32_t x, uint32_t y) const {
-	int val = buffer[y][x];
 	return getTileByType(static_cast<TileType>(buffer[y][x]));
 }

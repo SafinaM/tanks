@@ -29,7 +29,7 @@ struct Map : BoardBase {
 	
 	bool allowMove(Direction direction, const Figure &figure) const;
 	
-	bool allowMoveAmmo(Direction direction, const std::unique_ptr<Figure> &figure);
+	void crossWithAmmo(Tank &tank);
 	
 	bool
 	isCrossedTankWithBuffer(
@@ -38,10 +38,10 @@ struct Map : BoardBase {
 		int yOffset) const;
 	
 	void
-	crossAmmoWithBuffer(
-		const std::unique_ptr<Figure> &figure,
+	crossAmmoWithBuffer(const std::vector<std::vector<uint8_t>> &points,
 		int xOffset,
-		int yOffset);
+		int yOffset,
+		Ammo& shell);
 	
 	Tile getTileType(uint32_t x, uint32_t y) const;
 	

@@ -21,6 +21,8 @@ struct Ammo : BaseAmmoTankFigure {
 	
 	uint32_t id = 0;
 	
+	using Figure::getPoints;
+	
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const override;
 	
 //	void setPoints(Orientation orientation) noexcept;

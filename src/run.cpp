@@ -159,6 +159,7 @@ int main() {
 			painter.drawAmmo(tank, BackgroundColor::BC_YELLOW);
 			if (ammoUserTankDiff.count() > tank.getAmmoSpeed()) {
 				painter.eraseAmmo(tank);
+				map.crossWithAmmo(tank);
 				tank.moveAmmo();
 				ammoTimeStampStart = clock::system_clock::now();
 				ammoUserTankDiff.zero();
@@ -170,9 +171,11 @@ int main() {
 				painter.drawAmmo(opponents[i], BackgroundColor::BC_YELLOW);
 				if (ammoDiffs[i].count() > opponents[i].getAmmoSpeed()) {
 					painter.eraseAmmo(opponents[i]);
+					map.crossWithAmmo(opponents[i]);
 					opponents[i].moveAmmo();
 					ammoTimeStampStarts[i] = clock::system_clock::now();
 					ammoDiffs[i].zero();
+					painter.drawMap(map);
 				}
 				if (!opponents[i].isAlive) {
 					if (!opponents[i].isErased) {
@@ -190,7 +193,7 @@ int main() {
 					if (direction == Direction::Left && map.allowMove(direction, opponents[i]))
 						opponents[i].move(direction);
 					if (brain.checkShoot()) {
-//						opponents[i].shoot();
+						opponents[i].shoot();
 					}
 				}
 			}
