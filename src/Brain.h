@@ -1,11 +1,14 @@
 #pragma once
 
 #include "Tank.h"
+#include "TankEnums.h"
 
 struct Brain {
 	Action chooseAction(Tank& tank);
 	
-	Action chooseAction(std::vector<Tank>& tanks);
+	void chooseActions(std::vector<Tank>& tanks);
+	
+	bool checkShoot();
 	
 	Direction chooseDirection();
 	
