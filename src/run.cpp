@@ -202,11 +202,22 @@ int main() {
 					if (map.allowMove(directions[i], opponents[i]))
 						opponents[i].move(directions[i]);
 					else {
-						directions[i] = brain.chooseDirection();
-						continue;
+						Action action = brain.chooseAction(tank);
+						switch (action) {
+							case Action::Move:
+								continue;
+							case Action::Shoot:
+								if (brain.checkShoot(ShootProb::HighProb)) {
+									opponents[i].shoot();
+								}
+								break;
+							case Action::ChooseDirection:
+								directions[i] = brain.chooseDirection();
+								break;
+						}
 					}
-					
-					if (brain.checkShoot()) {
+					// shoot with high probability
+					if (brain.checkShoot(ShootProb::AverageProb)) {
 						opponents[i].shoot();
 					}
 				}

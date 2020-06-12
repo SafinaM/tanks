@@ -13,3 +13,9 @@ enum struct OpponentMode: uint32_t {
 	User,
 	ChooseDirection,
 };
+
+enum struct ShootProb: uint32_t {
+	HighProb    = 20,
+	AverageProb = 40,
+	LowProb     = 60
+};

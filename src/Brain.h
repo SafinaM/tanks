@@ -8,7 +8,7 @@ struct Brain {
 	
 	void chooseActions(std::vector<Tank>& tanks);
 	
-	bool checkShoot();
+	bool checkShoot(ShootProb upLimit);
 	
 	Direction chooseDirection();
 	
