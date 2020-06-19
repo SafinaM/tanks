@@ -6,7 +6,7 @@
 int main() {
 	
 	Map map(stageTest);
-	map.debugPrint();
+	map.debugPrint(map.buffer);
 	
 	const uint32_t xOrigin = 40;
 	const uint32_t yOrigin = 10;
