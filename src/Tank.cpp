@@ -38,6 +38,7 @@ Tank::Tank(TankType type) : m_tankType(type), BaseAmmoTankFigure(Orientation::Fi
 	
 	m_ammoSpeed = ammo[0].getSpeed();
 	setTankSpeed();
+
 }
 
 void Tank::move() noexcept {
@@ -146,6 +147,8 @@ std::vector<std::vector<uint8_t>> Tank::getPoints(Orientation orientation) const
 			return
 				{{2, 1},
 				 {3, 1}};
+		default:
+			assert(false);
 	}
 }
 

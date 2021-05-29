@@ -3,10 +3,13 @@
 #include "Ammo.h"
 #include "helpers.h"
 #include <Figure.h>
+#include <Point.h>
 
 #include <vector>
+#include <list>
 #include <cstdint>
 #include <string>
+#include <deque>
 
 struct Tank : BaseAmmoTankFigure {
 	
@@ -64,6 +67,7 @@ struct Tank : BaseAmmoTankFigure {
 	const static std::unordered_map<Tank::TankType, float, std::hash<size_t>> tankSpeedByTankType;
 	
 	std::vector<Ammo> ammo;
+	std::list<Point> path;
 	bool isAlive = true;
 	bool isErased = false;
 	

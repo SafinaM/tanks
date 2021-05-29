@@ -32,7 +32,7 @@ int main() {
 	std::vector<Tank> opponents;
 	opponents.reserve(numberOfOpponents);
 	std::vector<Direction> directions;
-	directions.reserve(numberOfOpponents);
+	directions.resize(numberOfOpponents);
 	
 	Brain brain;
 	Map map(stageTest);
@@ -78,10 +78,12 @@ int main() {
 	
 	painter.clearScreen();
 	painter.drawMap(map);
-	
 	for (uint32_t i = 0; i < numberOfOpponents; ++i) {
 		opponents[i].setXY(testOriginX + i, testOriginY + i);
 	}
+
+//	map.buildWave({tank.getXOffset(), tank.getYOffset()}, {opponents[0].getXOffset(), opponents[0].getYOffset()});
+
 	while(true) {
 		if (ch == 'q')
 			break;

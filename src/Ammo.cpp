@@ -35,6 +35,9 @@ std::vector<std::vector<uint8_t>> Ammo::getPoints(Orientation orientation) const
 			return
 				{{2},
 				 {3}};
+		default:
+			std::cerr << "getPoints: unsupporte Orientation type" << std::endl;
+			assert(false);
 	}
 }
 
